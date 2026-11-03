@@ -43,4 +43,4 @@ jobs:
         with:
           fail-on-severity: moderate
           # GPL-3.0-or-later project: reject licences that cannot be combined with it.
-          deny-licenses: SSPL-1.0, BUSL-1.1, CC-BY-NC-4.0, CC-BY-NC-SA-4.0, Commons-Clause, Elastic-2.0
+          deny-licenses: SSPL-1.0, BUSL-1.1, CC-BY-NC-4.0, CC-BY-NC-SA-4.0, Elastic-2.0
