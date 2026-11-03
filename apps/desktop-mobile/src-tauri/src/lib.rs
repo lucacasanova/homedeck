@@ -1,6 +1,18 @@
 //! homedeck shell: wires the shared UI to the node core.
 
+pub mod diagnostics;
+#[cfg(target_os = "linux")]
+pub mod launcher;
+
 use tauri_plugin_log::{RotationStrategy, Target, TargetKind};
+
+/// Tells the startup supervisor (ADR 0010) that the UI loaded, so a later exit
+/// is not treated as a graphics/startup failure.
+fn signal_ready() {
+    if let Some(path) = std::env::var_os("HOMEDECK_READY_FILE") {
+        let _ = std::fs::write(path, b"ready");
+    }
+}
 
 /// Returns the build label (e.g. `homedeck 0.1.0`) to the UI.
 #[tauri::command]
@@ -33,6 +45,17 @@ fn log_plugin<R: tauri::Runtime>() -> tauri::plugin::TauriPlugin<R> {
 /// Panics if the Tauri runtime fails to start (e.g. no display available).
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // Test hook for the supervisor: crash in the listed compatibility modes to
+    // simulate a graphics driver failure (`HOMEDECK_TEST_CRASH_MODES=default,no-dmabuf`).
+    if let (Ok(list), Ok(mode)) = (
+        std::env::var("HOMEDECK_TEST_CRASH_MODES"),
+        std::env::var("HOMEDECK_COMPAT"),
+    ) && list.split(',').any(|m| m.trim() == mode)
+    {
+        eprintln!("simulated crash in compat mode `{mode}`");
+        std::process::abort();
+    }
+
     let builder = tauri::Builder::default().plugin(log_plugin());
 
     #[cfg(desktop)]
@@ -42,12 +65,18 @@ pub fn run() {
     builder
         .setup(|_app| {
             log::info!(
-                "{} starting on {} {}",
+                "{} starting on {} {} (compat mode: {})",
                 homedeck_core::build_label(),
                 std::env::consts::OS,
-                std::env::consts::ARCH
+                std::env::consts::ARCH,
+                std::env::var("HOMEDECK_COMPAT").unwrap_or_else(|_| "none".into())
             );
             Ok(())
+        })
+        .on_page_load(|_webview, payload| {
+            if payload.event() == tauri::webview::PageLoadEvent::Finished {
+                signal_ready();
+            }
         })
         .invoke_handler(tauri::generate_handler![app_info])
         .run(tauri::generate_context!())
