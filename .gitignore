@@ -21,3 +21,6 @@ Thumbs.db
 # env
 .env
 .env.*
+
+# Playwright MCP (snapshots/screenshots do navegador)
+.playwright-mcp/
