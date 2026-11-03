@@ -16,6 +16,16 @@ homedeck: central de mídia local P2P, estilo console, multiplataforma. Ler ante
 - Toda UI precisa funcionar só com setas + OK + voltar.
 - Endpoints novos → atualizar a seção de protocolo em `ARCHITECTURE.md`.
 
+## Skills do projeto (`.claude/skills/`)
+Usar sempre:
+- `feature`: fluxo de toda tarefa (TODO → branch → ADR? → teste → review → sync → PR)
+- `adr`: registrar decisão de arquitetura
+- `poc`: validar risco de RISKS.md em dispositivo real
+- `review`: checklist do projeto antes de PR
+- `sync`: atualizar TODO/ROADMAP/issues; usar ao começar e terminar sessão
+
+Hook `.claude/hooks/guard-git.sh` bloqueia commit na `main`, force-push e mensagem fora de Conventional Commits.
+
 ## Estrutura
 - `crates/core`: lógica do nó (Rust)
 - `packages/ui`: UI compartilhada

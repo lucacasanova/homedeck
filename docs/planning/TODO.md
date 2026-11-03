@@ -7,6 +7,7 @@ Lista viva. Quando o repo estiver no GitHub, cada item vira uma issue no milesto
 - [x] Licença GPL-3.0
 - [x] CLAUDE.md, CONTRIBUTING.md, templates de issue/PR
 - [x] ADRs iniciais (stack, licença, game streaming)
+- [x] Skills do Claude (feature, adr, poc, review, sync) + hook de git
 - [ ] Criar repo no GitHub e subir
 - [ ] Proteção da branch `main` (PR obrigatório, CI verde)
 - [ ] Milestones das fases 0–7 e labels (`area:*`, `type:*`, `platform:*`)
