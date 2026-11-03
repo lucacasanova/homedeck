@@ -14,7 +14,7 @@ MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mí
 - Idioma dos docs: PT-BR. Código, identificadores e mensagens de commit: inglês.
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `ci:`). Escopo = área (`feat(dedup): ...`).
 - Nunca commitar direto na `main`. Branch `tipo/N-descricao-curta` + PR. Commits com `-s` (DCO).
-- Merge de PR e publicação de release só com autorização explícita do mantenedor. O `settings.json` bloqueia `gh pr merge` e `gh release create` pro Claude; o mantenedor faz pela interface ou com `!`.
+- **Merge:** o Claude pode fazer merge (`gh pr merge N --squash --delete-branch`) de PRs do mantenedor ou do próprio Claude quando **todos os checks estão verdes**, o PR passou pela skill `review` e o mantenedor pediu ou autorizou o fluxo. PR da **comunidade** só depois da skill `review-contribution` **e** do "sim" explícito do mantenedor pra aquele PR. Nunca use `--admin` pra furar checks. **Release:** a publicação (`gh release create`, merge do PR de release) é sempre do mantenedor.
 - Navegador: o Playwright MCP pode ser usado pra tarefas que só existem na interface do GitHub (board, fixar discussion, configurações). Saídas ficam em `.playwright-mcp/` (ignorado pelo git).
 - Decisão de arquitetura nova → criar ADR em `docs/adr/` a partir do `0000-template.md`.
 - Todo trabalho tem issue. PR fecha a issue com `Closes #N`; merge por squash.

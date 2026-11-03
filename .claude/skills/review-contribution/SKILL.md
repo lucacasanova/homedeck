@@ -68,6 +68,6 @@ Responda com:
 
 ## 6. Depois da decisão do usuário
 - **Pedir mudanças:** `gh pr review N --request-changes -b "<texto>"`.
-- **Aprovar:** só com o "sim" explícito do usuário: `gh pr review N --approve -b "<texto>"`. O **merge é do usuário**: o `settings.json` bloqueia `gh pr merge` pro Claude.
+- **Aprovar e fazer merge:** só com o "sim" explícito do usuário pra este PR: `gh pr review N --approve -b "<texto>"` e, com os checks verdes, `gh pr merge N --squash --delete-branch`. Nunca use `--admin`.
 - **Malicioso:** não comente detalhes técnicos que ensinem a contornar a detecção. Feche o PR, sugira ao usuário bloquear o autor e registre o caso num advisory privado (`SECURITY.md`).
 - Agradeça sempre a contribuição legítima, mesmo quando pedir mudanças.
