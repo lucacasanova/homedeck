@@ -13,7 +13,7 @@ Instalar o homedeck em cada dispositivo e pronto: eles se acham na rede, cada um
 1. **Sem servidor central.** Todo dispositivo é um nó. Não depende de nuvem nem de conta.
 2. **Local-first e privado.** Nada sai da rede de casa.
 3. **Interface de console.** Tudo funciona só com setas + OK + voltar.
-4. **Seguro por padrão.** Pareamento obrigatório; tráfego criptografado.
+4. **Seguro por padrão.** Pareamento do dispositivo + login e senha do usuário em todos os dispositivos; tráfego criptografado.
 5. **Nunca apagar sem confirmação.** Duplicados vão pra quarentena, com desfazer.
 6. **Leve.** Roda bem em TV e em PC fraco.
 
@@ -40,8 +40,11 @@ Essas ideias fazem parte da visão do projeto e têm milestones próprios. Só c
 - **M8 — Windows, macOS e iOS.**
 - **M9 — Lojas:** Play Store, Samsung Apps, Flathub, App Store.
 - **M10 — Modo console:** sessão Linux estilo SteamOS, kiosk no Windows, launcher na Android TV.
+- **M11 — Acesso remoto e painel web:** configurar e acessar fora de casa, sem expor nós na internet, com 2FA.
+
+Jogos: **somente originais**, de lojas oficiais (Steam, EA app, Epic, GOG, Ubisoft Connect, Battle.net, Amazon Games, Xbox/Game Pass). Ver ADR 0006.
 
 ## Fora do escopo
 
-- Acesso fora da rede local (internet).
+- Jogos não originais, ROMs, cracks ou contorno de DRM.
 - Download de metadados online (capas, sinopses).

@@ -44,16 +44,17 @@ O **homedeck** resolve isso com três ideias:
 - 🎵 **Músicas** por artista, álbum e pasta, com fila, aleatório e repetir
 - 🖼️ **Imagens** com visualizador e slideshow
 - 📡 **Descoberta automática** de dispositivos na rede local (mDNS)
-- 🔐 **Pareamento por PIN** e conexão criptografada, com senha opcional por dispositivo e por perfil
+- 🔐 **Login e senha em todos os dispositivos**, pareamento por PIN, conexão criptografada, perfis com PIN e login na TV pelo celular
 - 📺 **Tocar em outro dispositivo** e controle remoto entre eles
 - 🪟 **Visual de vidro translúcido** sobre um papel de parede escolhido em cada dispositivo ([design](docs/design/DESIGN.md))
 
 ### 🔭 Pós-MVP (no escopo, com milestones próprios)
 - 🧹 **Gestão de arquivos:** duplicados exatos e quase-duplicados, também entre dispositivos; quarentena com desfazer (nunca apaga direto); painel de espaço; reconversão para H.265/AV1. [M6](https://github.com/lucacasanova/homedeck/milestone/8)
-- 🕹️ **Jogos do PC na TV:** listar Steam, Heroic e Lutris; abrir pelo controle; streaming via Sunshine/Moonlight com controle Xbox ligado na TV. [M7](https://github.com/lucacasanova/homedeck/milestone/9)
+- 🕹️ **Jogos do PC na TV — somente originais:** Steam, EA app, Epic, GOG, Ubisoft Connect, Battle.net, Amazon e Xbox, sempre pelo launcher oficial; abrir pelo controle; streaming via Sunshine/Moonlight com controle Xbox ligado na TV. [M7](https://github.com/lucacasanova/homedeck/milestone/9)
 - 🪟 **Windows, macOS e iOS.** [M8](https://github.com/lucacasanova/homedeck/milestone/10)
 - 🏪 **Lojas oficiais:** Play Store, Samsung Apps, Flathub e App Store. [M9](https://github.com/lucacasanova/homedeck/milestone/11)
 - 🐧 **Modo console:** sessão Linux que inicia direto no homedeck (estilo SteamOS), kiosk no Windows e launcher na Android TV. [M10](https://github.com/lucacasanova/homedeck/milestone/12)
+- 🌐 **Acesso remoto e painel web:** configurar e assistir fora de casa, sem abrir porta no roteador, com 2FA. [M11](https://github.com/lucacasanova/homedeck/milestone/13)
 
 ## 📱 Plataformas
 
@@ -93,6 +94,7 @@ As ideias abaixo fazem parte do projeto e já têm milestone e issues. Começam 
 | [M8 — Windows, macOS e iOS](https://github.com/lucacasanova/homedeck/milestone/10) | Novas plataformas | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/10?style=flat-square&color=c2a4f5) |
 | [M9 — Lojas e distribuição](https://github.com/lucacasanova/homedeck/milestone/11) | Play Store, Samsung Apps, Flathub, App Store | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/11?style=flat-square&color=c2a4f5) |
 | [M10 — Modo console](https://github.com/lucacasanova/homedeck/milestone/12) | Sessão estilo SteamOS, kiosk, launcher | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/12?style=flat-square&color=c2a4f5) |
+| [M11 — Acesso remoto e painel web](https://github.com/lucacasanova/homedeck/milestone/13) | Configurar e assistir fora de casa | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/13?style=flat-square&color=c2a4f5) |
 
 ## 🗺️ Roadmap
 
@@ -109,7 +111,7 @@ MVP
 M0 Fundação ─► M1 Player Linux ─► M2 Rede local ─┬─► M3 Tizen ──────┐
                                                  └─► M4 Android/TV ─┴─► M5 Cast
 Pós-MVP
-M6 Gestão de arquivos · M7 Jogos · M8 Windows/macOS/iOS · M9 Lojas · M10 Modo console
+M6 Gestão de arquivos · M7 Jogos · M8 Windows/macOS/iOS · M9 Lojas · M10 Modo console · M11 Acesso remoto
 ```
 
 ## 🧱 Arquitetura
@@ -146,15 +148,33 @@ Este projeto é desenvolvido com [Claude Code](https://claude.com/claude-code), 
 | [`.claude/skills/poc`](.claude/skills/poc/SKILL.md) | Valida riscos em dispositivo real |
 | [`.claude/skills/review`](.claude/skills/review/SKILL.md) | Checklist de revisão do projeto |
 | [`.claude/skills/sync`](.claude/skills/sync/SKILL.md) | Status do projeto a partir das issues e milestones |
+| [`.claude/skills/triage`](.claude/skills/triage/SKILL.md) | Triagem de issues novas: labels, milestone, épico e board |
+| [`.claude/skills/release`](.claude/skills/release/SKILL.md) | Release seguindo o ADR 0007 |
+| [`.claude/agents/reviewer`](.claude/agents/reviewer.md) | Agente revisor independente (somente leitura) |
+| [`.claude/agents/security-reviewer`](.claude/agents/security-reviewer.md) | Agente de revisão de segurança |
+| [`.claude/hooks/session-status.sh`](.claude/hooks/session-status.sh) | Mostra o status do projeto ao abrir o Claude |
 | [`.claude/hooks/guard-git.sh`](.claude/hooks/guard-git.sh) | Bloqueia commit na `main`, force-push e commit fora do padrão |
 
-Todo código passa por PR e revisão. Commits feitos com Claude levam `Co-Authored-By`.
+Todo código passa por PR e revisão humana; o Claude nunca faz merge nem publica releases. Commits feitos com Claude levam `Co-Authored-By`. Veja a [política de contribuições com IA](CONTRIBUTING.md#contribuições-com-ia).
+
+## 🔢 Versionamento e releases
+
+- **SemVer** com versão única pra todas as plataformas. `0.x` até o MVP; `1.0.0` = MVP completo ([ADR 0007](docs/adr/0007-versionamento-e-releases.md)).
+- **Canais:** nightly (cada merge), beta (`vX.Y.Z-beta.N`) e stable (`vX.Y.Z`).
+- **CHANGELOG** e releases gerados automaticamente a partir dos Conventional Commits.
+- **Artefatos assinados**, com `SHA256SUMS` e attestation de build.
+
+## 🔒 Segurança
+
+Encontrou uma falha? **Não abra issue pública.** Use o [reporte privado](https://github.com/lucacasanova/homedeck/security/advisories/new). Veja o [SECURITY.md](SECURITY.md).
 
 ## 🤝 Como contribuir
 
 1. Escolha uma issue, de preferência com [`good first issue`](https://github.com/lucacasanova/homedeck/labels/good%20first%20issue) ou [`help wanted`](https://github.com/lucacasanova/homedeck/labels/help%20wanted).
 2. Comente na issue que vai pegar.
-3. Siga o [CONTRIBUTING.md](CONTRIBUTING.md): branch `tipo/nome`, Conventional Commits, PR ligado à issue.
+3. Siga o [CONTRIBUTING.md](CONTRIBUTING.md): branch `tipo/N-nome`, Conventional Commits assinados (`git commit -s`), PR ligado à issue.
+
+Dúvidas e ideias: [Discussions](https://github.com/lucacasanova/homedeck/discussions) · Regras de convivência: [Código de Conduta](CODE_OF_CONDUCT.md) · Como decidimos: [GOVERNANCE.md](GOVERNANCE.md) · Ajuda: [SUPPORT.md](SUPPORT.md)
 
 ### Contribuidores
 

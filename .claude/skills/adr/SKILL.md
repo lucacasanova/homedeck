@@ -5,7 +5,7 @@ description: Registra uma decisão de arquitetura do homedeck como ADR em docs/a
 
 # Criar ADR
 
-1. Liste `docs/adr/` e pegue o próximo número (4 dígitos).
+1. Liste `docs/adr/` e pegue o próximo número livre (4 dígitos). O número só é definido na criação; issues não reservam número.
 2. Copie `docs/adr/0000-template.md` pra `docs/adr/NNNN-titulo-em-kebab.md`.
 3. Preencha:
    - **Contexto:** problema e restrições reais (plataformas afetadas, issues `type:risk` relacionadas).

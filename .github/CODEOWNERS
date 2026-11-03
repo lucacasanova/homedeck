@@ -1,0 +1,8 @@
+# Revisor padrão
+*                       @lucacasanova
+
+# Áreas sensíveis: sempre revisão do mantenedor
+/docs/adr/              @lucacasanova
+/.claude/               @lucacasanova
+/.github/               @lucacasanova
+SECURITY.md             @lucacasanova
