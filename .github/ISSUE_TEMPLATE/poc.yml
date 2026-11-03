@@ -1,0 +1,21 @@
+name: Risco técnico / POC
+description: Algo que precisa ser validado em dispositivo real antes de virar código definitivo
+labels: ["type:poc", "type:risk"]
+body:
+  - type: textarea
+    id: question
+    attributes: { label: Pergunta a responder, description: "Ex.: o app web da Tizen consegue fazer mDNS?" }
+    validations: { required: true }
+  - type: textarea
+    id: success
+    attributes: { label: Critério de sucesso, description: O que observar e em qual dispositivo/versão }
+    validations: { required: true }
+  - type: textarea
+    id: planb
+    attributes: { label: Plano B se falhar }
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma
+      multiple: true
+      options: [Linux, Android, Android TV, Tizen, Windows, macOS, iOS]

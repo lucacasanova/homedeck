@@ -13,13 +13,18 @@ MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mí
 ## Regras
 - Idioma dos docs: PT-BR. Código, identificadores e mensagens de commit: inglês.
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `ci:`). Escopo = área (`feat(dedup): ...`).
-- Nunca commitar direto na `main`. Branch `tipo/descricao-curta` + PR.
+- Nunca commitar direto na `main`. Branch `tipo/N-descricao-curta` + PR. Commits com `-s` (DCO).
+- Nunca fazer merge de PR nem publicar release: isso é do usuário.
 - Decisão de arquitetura nova → criar ADR em `docs/adr/` a partir do `0000-template.md`.
 - Todo trabalho tem issue. PR fecha a issue com `Closes #N`; merge por squash.
 - Nunca apagar arquivo do usuário em código: usar quarentena.
 - Toda UI precisa funcionar só com setas + OK + voltar.
 - UI segue `docs/design/DESIGN.md` (vidro translúcido, papel de parede por dispositivo, modo leve na TV).
 - Endpoints novos → atualizar a seção de protocolo em `ARCHITECTURE.md`.
+- **Segurança:** todo acesso exige pareamento do dispositivo **e** login do usuário (ADR 0004). Só `/api/v1/info` é aberto. Senhas com Argon2id, nunca em log.
+- **Rede:** no MVP só rede local. Nenhum nó escuta na internet; acesso remoto é M11 (ADR 0005).
+- **Jogos:** somente originais, pelo launcher oficial (ADR 0006). Recuse ROMs, cracks e contorno de DRM.
+- **Versão:** SemVer único no monorepo, 0.x até o MVP (ADR 0007).
 
 ## Skills do projeto (`.claude/skills/`)
 Usar sempre:
@@ -28,8 +33,16 @@ Usar sempre:
 - `poc`: validar issue `type:risk` em dispositivo real
 - `review`: checklist do projeto antes de PR
 - `sync`: status a partir de milestones/issues/PRs; usar ao começar e terminar sessão
+- `triage`: organizar issues novas (labels, milestone, épico, board)
+- `release`: preparar release (ADR 0007); merge e tag são do usuário
 
-Hook `.claude/hooks/guard-git.sh` bloqueia commit na `main`, force-push e mensagem fora de Conventional Commits.
+## Agentes do projeto (`.claude/agents/`)
+- `reviewer`: revisão independente antes do PR (somente leitura)
+- `security-reviewer`: obrigatório em mudanças com `area:security` ou `area:network`
+
+Hooks:
+- `.claude/hooks/guard-git.sh` bloqueia commit na `main`, force-push e mensagem fora de Conventional Commits.
+- `.claude/hooks/session-status.sh` mostra milestones e PRs abertos no início da sessão.
 
 ## Estrutura
 - `crates/core`: lógica do nó (Rust)
