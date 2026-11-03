@@ -1,0 +1,27 @@
+"area:core":
+  - changed-files:
+      - any-glob-to-any-file: "crates/**"
+"area:ui":
+  - changed-files:
+      - any-glob-to-any-file: ["packages/ui/**", "docs/design/**"]
+"area:network":
+  - changed-files:
+      - any-glob-to-any-file: "packages/protocol/**"
+"area:ci":
+  - changed-files:
+      - any-glob-to-any-file: [".github/**", "release-please-config.json", ".release-please-manifest.json"]
+"platform:tizen":
+  - changed-files:
+      - any-glob-to-any-file: "apps/tizen/**"
+"platform:linux":
+  - changed-files:
+      - any-glob-to-any-file: "apps/desktop-mobile/src-tauri/**/linux/**"
+"platform:android":
+  - changed-files:
+      - any-glob-to-any-file: "apps/desktop-mobile/src-tauri/gen/android/**"
+"type:docs":
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "*.md"]
+"area:security":
+  - changed-files:
+      - any-glob-to-any-file: ["SECURITY.md", "PRIVACY.md", "docs/privacy/**", "docs/adr/0004-*", "docs/adr/0005-*", "docs/adr/0008-*"]
