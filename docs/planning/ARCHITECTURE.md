@@ -8,13 +8,13 @@
 │        │  IPC (Tauri) / HTTP+WS (Tizen)                             │
 │  Core (crates/core, Rust)                                           │
 │   ├─ indexer     → varre pastas, ffprobe, thumbnails                │
-│   ├─ dedup       → tamanho → hash parcial → BLAKE3 completo         │
-│   ├─ storage     → uso de disco, quarentena, reconversão opcional   │
+│   ├─ dedup       → (later) tamanho → hash parcial → BLAKE3          │
+│   ├─ storage     → (later) uso de disco, quarentena                 │
 │   ├─ stream      → HTTP Range + HLS (ffmpeg) quando o codec exige   │
 │   ├─ discovery   → mDNS/DNS-SD `_homedeck._tcp` (+ fallbacks)       │
 │   ├─ pairing     → PIN/QR, troca de chaves, TLS com cert fixado     │
 │   ├─ control     → WebSocket: comandos (play, pause, seek, browse)  │
-│   └─ games       → lista bibliotecas, lança jogos, aciona Sunshine  │
+│   └─ games       → (later) bibliotecas de jogos, Sunshine           │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -39,7 +39,8 @@ packages/
 crates/
   core/             # lógica do nó
 docs/
-  planning/         # visão, roadmap, riscos, TODO
+  planning/         # visão e arquitetura (roadmap e tarefas no GitHub)
+  design/           # design system
   adr/              # decisões de arquitetura
 ```
 
@@ -61,4 +62,4 @@ docs/
 
 ## Decisões abertas
 
-Ver [RISKS.md](RISKS.md). Cada decisão tomada vira um ADR em `docs/adr/`.
+Riscos abertos: issues com label [`type:risk`](https://github.com/lucacasanova/homedeck/labels/type%3Arisk). Cada decisão tomada vira um ADR em `docs/adr/`.

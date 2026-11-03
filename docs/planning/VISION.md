@@ -26,8 +26,19 @@ Instalar o homedeck em cada dispositivo e pronto: eles se acham na rede, cada um
 | Cast entre qualquer par de dispositivos | ✅ | parcial | parcial |
 | Jogos do PC na TV | ✅ (via Sunshine) | ❌ | ❌ |
 
-## Fora do escopo (por enquanto)
+## MVP
+
+- **Plataformas:** Linux (Manjaro primeiro), Android, Android TV e Samsung TV (Tizen).
+- **Escopo:** reproduzir vídeo, música e imagem, localmente e entre dispositivos da rede, com pareamento seguro e cast.
+
+## Depois do MVP (label `later`)
+
+- Gestão de arquivos: duplicados, quarentena, painel de espaço.
+- Jogos do PC na TV (Sunshine/Moonlight).
+- Windows, macOS, iOS e publicação nas lojas.
+- Sessão Linux estilo SteamOS.
+
+## Fora do escopo
 
 - Acesso fora da rede local (internet).
-- Música e fotos (talvez depois).
 - Download de metadados online (capas, sinopses).

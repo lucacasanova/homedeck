@@ -1,16 +1,21 @@
 ---
 name: sync
-description: Sincroniza o planejamento do homedeck com o estado real do código — TODO, ROADMAP, RISKS e issues do GitHub. Use ao fim de cada tarefa ou sessão, quando o usuário perguntar "onde paramos", "o que falta", "status do projeto", ou ao começar uma sessão nova.
+description: Mostra e sincroniza o status do homedeck a partir do GitHub (milestones, épicos, sub-issues, PRs). Use ao começar e terminar cada sessão, ao fim de cada tarefa, ou quando o usuário perguntar "onde paramos", "o que falta", "status do projeto", "próximo passo".
 ---
 
-# Sincronizar planejamento
+# Sincronizar status
 
-1. Leia `docs/planning/TODO.md`, `ROADMAP.md`, `RISKS.md` e `git log --oneline -20`.
-2. Marque como feito no TODO o que os commits/PRs entregaram. Desmarque o que foi revertido.
-3. Se o repo tem remoto no GitHub: confira `gh issue list` e `gh api repos/{owner}/{repo}/milestones`. Item do TODO sem issue → ofereça criar. Issue fechada → marque no TODO.
-4. Fase com todos os itens feitos e critério "Pronto quando" atendido → avise o usuário e proponha fechar o milestone.
-5. Responda com um resumo curto:
-   - Fase atual e % de itens feitos.
-   - Últimos itens concluídos.
-   - Próximos 3 itens sugeridos (respeitando dependências e riscos abertos).
-6. Se alterou docs: commit `docs(planning): sync status`.
+1. Colete:
+   - `gh api repos/{owner}/{repo}/milestones --jq '.[] | "\(.number) \(.title) \(.closed_issues)/\(.open_issues+.closed_issues)"'`
+   - `gh issue list --state open --milestone "<milestone atual>" --json number,title,labels,assignees`
+   - `gh pr list --state open`
+   - `git log --oneline -10` e `git status -s`
+2. Ajuste o que estiver fora de sincronia:
+   - PR mergeado sem `Closes #N` → feche a issue certa com `--reason completed`.
+   - Issue em andamento sem comentário/branch → pergunte ao usuário.
+   - Trabalho feito sem issue → ofereça criar e já fechar.
+3. Milestone com todas as issues fechadas e critério "Pronto quando" (descrição do milestone) atendido → avise e proponha fechar: `gh api -X PATCH repos/{owner}/{repo}/milestones/N -f state=closed`.
+4. Responda com um resumo curto:
+   - milestone atual e progresso (x/y)
+   - últimas issues fechadas
+   - próximas 3 issues sugeridas (priority:p0 primeiro, respeitando dependências e riscos `type:risk` abertos)

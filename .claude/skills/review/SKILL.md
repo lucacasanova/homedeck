@@ -29,4 +29,5 @@ Rode `git diff main...HEAD` (ou o diff do PR) e confira cada item. Reporte só o
 - [ ] Testes cobrindo o comportamento novo.
 - [ ] `ARCHITECTURE.md` atualizado se mudou protocolo ou módulo.
 - [ ] ADR criado se houve decisão nova.
-- [ ] `TODO.md` atualizado.
+- [ ] PR com `Closes #N` e título em Conventional Commits.
+- [ ] UI segue `docs/design/DESIGN.md` (vidro, foco, modo leve na TV).
