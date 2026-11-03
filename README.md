@@ -1,40 +1,159 @@
-# homedeck
+<div align="center">
 
-Central de mídia local, estilo console, que roda em todos os seus dispositivos e os conecta pela rede de casa.
+# 🎮 homedeck
 
-> **Status:** planejamento (fase 0). Ainda não existe nada pronto pra usar.
+**Sua central de mídia local, com cara de console, em todos os seus dispositivos e sem servidor.**
 
-## O que vai fazer
+Instale no PC, no celular e na TV. Eles se encontram sozinhos na rede de casa, e qualquer um mostra e controla a mídia dos outros.
 
-- **Interface estilo console** (10-foot UI) navegável por controle remoto, gamepad ou teclado.
-- **Biblioteca de vídeos locais**: indexa pastas, gera miniaturas, toca tudo.
-- **Cuidado com espaço**: encontra arquivos duplicados (vão pra quarentena, nunca apagados direto) e mostra o que ocupa mais.
-- **Dispositivos conectados**: PC, celular, Android TV e TV Samsung (Tizen) se descobrem na mesma rede.
-- **Gerenciar e transmitir**: da TV ver os arquivos do PC; do PC mandar a TV tocar algo.
-- **Senha por dispositivo e por perfil**: pareamento com PIN e conexão criptografada.
-- **Jogos do PC na TV** (futuro): listar a biblioteca e jogar na TV com controle Xbox, via [Sunshine](https://github.com/LizardByte/Sunshine).
+[![Stars](https://img.shields.io/github/stars/lucacasanova/homedeck?style=for-the-badge&logo=github&color=d4f75a&labelColor=141a05)](https://github.com/lucacasanova/homedeck/stargazers)
+[![Forks](https://img.shields.io/github/forks/lucacasanova/homedeck?style=for-the-badge&logo=github&color=d4f75a&labelColor=141a05)](https://github.com/lucacasanova/homedeck/network/members)
+[![Issues](https://img.shields.io/github/issues/lucacasanova/homedeck?style=for-the-badge&color=d4f75a&labelColor=141a05)](https://github.com/lucacasanova/homedeck/issues)
+[![License](https://img.shields.io/github/license/lucacasanova/homedeck?style=for-the-badge&color=d4f75a&labelColor=141a05)](LICENSE)
 
-## Plataformas
+[![Last commit](https://img.shields.io/github/last-commit/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck/commits/main)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck/pulse)
+[![Open PRs](https://img.shields.io/github/issues-pr/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck/pulls)
+[![Contributors](https://img.shields.io/github/contributors/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck/graphs/contributors)
+[![Repo size](https://img.shields.io/github/repo-size/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck)
+[![Built with Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-d97757?style=flat-square&logo=anthropic&logoColor=white)](https://claude.com/claude-code)
 
-| Plataforma | Distribuição |
+[Objetivo](#-objetivo) · [Funcionalidades](#-funcionalidades) · [Plataformas](#-plataformas) · [Conquistas](#-conquistas) · [Roadmap](#-roadmap) · [Arquitetura](#-arquitetura) · [Claude](#-desenvolvido-com-claude) · [Contribuir](#-como-contribuir)
+
+</div>
+
+> [!NOTE]
+> **Status: em desenvolvimento (M0 — Fundação).** Ainda não há versão pra instalar. Acompanhe pelos [milestones](https://github.com/lucacasanova/homedeck/milestones) ou deixe uma ⭐ pra receber novidades.
+
+---
+
+## 🎯 Objetivo
+
+Seus vídeos, músicas e fotos ficam espalhados entre PC, celular e HD externo. Pra ver na TV é preciso copiar arquivo, usar pendrive ou montar um servidor que exige configuração.
+
+O **homedeck** resolve isso com três ideias:
+
+1. **Cada dispositivo é um nó.** Não existe servidor central, conta ou nuvem. Instalou, funciona.
+2. **Interface de console.** Tela cheia, navegável só com controle remoto, gamepad ou setas. Feita pra sofá.
+3. **Tudo se fala.** Da TV você navega o que está no PC. Do celular você manda a TV tocar algo.
+
+## ✨ Funcionalidades
+
+### No MVP
+- 🎬 **Vídeos** com legendas (embutidas e `.srt`), troca de faixa de áudio e continuar assistindo
+- 🎵 **Músicas** por artista, álbum e pasta, com fila, aleatório e repetir
+- 🖼️ **Imagens** com visualizador e slideshow
+- 📡 **Descoberta automática** de dispositivos na rede local (mDNS)
+- 🔐 **Pareamento por PIN** e conexão criptografada, com senha opcional por dispositivo e por perfil
+- 📺 **Tocar em outro dispositivo** e controle remoto entre eles
+- 🪟 **Visual de vidro translúcido** sobre um papel de parede escolhido em cada dispositivo ([design](docs/design/DESIGN.md))
+
+### Depois do MVP
+- 🧹 Gestão de arquivos: duplicados (com quarentena, nunca apaga direto) e painel de espaço ([#58](https://github.com/lucacasanova/homedeck/issues/58))
+- 🕹️ Jogos do PC na TV com controle Xbox, via Sunshine/Moonlight ([#59](https://github.com/lucacasanova/homedeck/issues/59))
+- 🐧 Sessão Linux que inicia direto no homedeck, estilo SteamOS ([#62](https://github.com/lucacasanova/homedeck/issues/62))
+
+## 📱 Plataformas
+
+| Plataforma | Prioridade | Status | Distribuição |
+|---|---|---|---|
+| 🐧 Linux (Manjaro primeiro; Arch, Ubuntu, Fedora...) | **MVP** | 🚧 em desenvolvimento | AppImage, AUR |
+| 🤖 Android | **MVP** | 📋 planejado | APK (GitHub Releases) |
+| 📺 Android TV | **MVP** | 📋 planejado | APK |
+| 📺 Samsung TV (Tizen) | **MVP** | 📋 planejado | `.wgt` (modo desenvolvedor) |
+| 🪟 Windows · 🍎 macOS · 📱 iOS | depois | 💤 [#60](https://github.com/lucacasanova/homedeck/issues/60) | — |
+| 🏪 Play Store · Samsung Apps · Flathub | depois | 💤 [#61](https://github.com/lucacasanova/homedeck/issues/61) | — |
+
+## 🏆 Conquistas
+
+O progresso é atualizado automaticamente a partir dos milestones do GitHub.
+
+| Marco | O que entrega | Progresso |
+|---|---|---|
+| [M0 — Fundação](https://github.com/lucacasanova/homedeck/milestone/1) | Workspace, casco Tauri, CI Linux/Android | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/1?style=flat-square&color=d4f75a) |
+| [M1 — Player Linux](https://github.com/lucacasanova/homedeck/milestone/2) | Biblioteca + vídeo, música e imagem no Manjaro | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/2?style=flat-square&color=d4f75a) |
+| [M2 — Rede local](https://github.com/lucacasanova/homedeck/milestone/3) | Descoberta, pareamento, streaming entre PCs | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/3?style=flat-square&color=d4f75a) |
+| [M3 — Tizen](https://github.com/lucacasanova/homedeck/milestone/4) | TV Samsung tocando mídia do PC | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/4?style=flat-square&color=d4f75a) |
+| [M4 — Android e Android TV](https://github.com/lucacasanova/homedeck/milestone/5) | Celular e Android TV | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/5?style=flat-square&color=d4f75a) |
+| [M5 — Cast e controle remoto](https://github.com/lucacasanova/homedeck/milestone/6) | "Tocar em…" e controle remoto | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/6?style=flat-square&color=d4f75a) |
+
+## 🗺️ Roadmap
+
+O planejamento fica **no GitHub**, não em arquivos:
+
+- **[Milestones](https://github.com/lucacasanova/homedeck/milestones):** fases com critério de pronto.
+- **[Issues](https://github.com/lucacasanova/homedeck/issues):** cada milestone tem um épico, e as tarefas são sub-issues dele.
+- **Labels:** `type:*`, `area:*`, `platform:*`, `priority:p0–p2`, `later`.
+- **Riscos técnicos:** issues com `type:risk` e `type:poc`, validados em dispositivo real antes do código definitivo.
+
+```
+M0 Fundação ─► M1 Player Linux ─► M2 Rede local ─┬─► M3 Tizen ──────┐
+                                                 └─► M4 Android/TV ─┴─► M5 Cast
+```
+
+## 🧱 Arquitetura
+
+```
+┌─────────────── nó homedeck ───────────────┐
+│  UI web compartilhada (vidro, 10-foot)    │
+│            │                              │
+│  Core em Rust: biblioteca · player ·      │
+│  descoberta · pareamento · streaming      │
+└───────────────────────────────────────────┘
+  Linux / Android / Android TV → Tauri 2 (nó completo)
+  Samsung TV (Tizen)           → web app (cliente)
+```
+
+| Camada | Tecnologia |
 |---|---|
-| Windows | `.msi` / `.exe` |
-| macOS | `.dmg` |
-| Linux (Ubuntu, Fedora, Manjaro, Arch...) | `.deb`, `.rpm`, `.AppImage`, Flatpak, AUR |
-| Android / Android TV | Google Play + APK |
-| iOS | App Store |
-| Samsung TV (Tizen) | Samsung Apps (`.wgt`) |
+| Core | Rust, SQLite, ffmpeg/ffprobe |
+| UI | Web (framework a decidir em [#3](https://github.com/lucacasanova/homedeck/issues/3)) com spatial navigation |
+| Casco | Tauri 2 · web app Tizen |
+| Rede | mDNS/DNS-SD, HTTP Range, HLS, WebSocket, TLS com certificado fixado |
 
-## Documentação
+Detalhes: [ARCHITECTURE.md](docs/planning/ARCHITECTURE.md) · [Visão](docs/planning/VISION.md) · [Design](docs/design/DESIGN.md) · [ADRs](docs/adr/)
 
-- [Visão](docs/planning/VISION.md)
-- [Arquitetura](docs/planning/ARCHITECTURE.md)
-- [Roadmap](docs/planning/ROADMAP.md)
-- [Riscos e POCs](docs/planning/RISKS.md)
-- [TODO](docs/planning/TODO.md)
-- [Decisões de arquitetura (ADRs)](docs/adr/)
-- [Como contribuir](CONTRIBUTING.md)
+## 🤖 Desenvolvido com Claude
 
-## Licença
+Este projeto é desenvolvido com [Claude Code](https://claude.com/claude-code), com regras versionadas no próprio repositório pra que o processo continue consistente ao longo do tempo:
 
-[GPL-3.0](LICENSE). Forks e versões modificadas precisam continuar abertos.
+| Arquivo | Pra que serve |
+|---|---|
+| [`CLAUDE.md`](CLAUDE.md) | Regras do projeto: idioma, commits, branches, segurança, UI |
+| [`.claude/skills/feature`](.claude/skills/feature/SKILL.md) | Fluxo de toda tarefa: issue → branch → ADR → teste → review → PR |
+| [`.claude/skills/adr`](.claude/skills/adr/SKILL.md) | Registra decisões de arquitetura |
+| [`.claude/skills/poc`](.claude/skills/poc/SKILL.md) | Valida riscos em dispositivo real |
+| [`.claude/skills/review`](.claude/skills/review/SKILL.md) | Checklist de revisão do projeto |
+| [`.claude/skills/sync`](.claude/skills/sync/SKILL.md) | Status do projeto a partir das issues e milestones |
+| [`.claude/hooks/guard-git.sh`](.claude/hooks/guard-git.sh) | Bloqueia commit na `main`, force-push e commit fora do padrão |
+
+Todo código passa por PR e revisão. Commits feitos com Claude levam `Co-Authored-By`.
+
+## 🤝 Como contribuir
+
+1. Escolha uma issue, de preferência com [`good first issue`](https://github.com/lucacasanova/homedeck/labels/good%20first%20issue) ou [`help wanted`](https://github.com/lucacasanova/homedeck/labels/help%20wanted).
+2. Comente na issue que vai pegar.
+3. Siga o [CONTRIBUTING.md](CONTRIBUTING.md): branch `tipo/nome`, Conventional Commits, PR ligado à issue.
+
+### Contribuidores
+
+<a href="https://github.com/lucacasanova/homedeck/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=lucacasanova/homedeck" alt="Contribuidores" />
+</a>
+
+## ⭐ Histórico de estrelas
+
+<a href="https://star-history.com/#lucacasanova/homedeck&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=lucacasanova/homedeck&type=Date&theme=dark" />
+    <img alt="Star History" src="https://api.star-history.com/svg?repos=lucacasanova/homedeck&type=Date" />
+  </picture>
+</a>
+
+## 📄 Licença
+
+[GPL-3.0-or-later](LICENSE). Use, estude, modifique e distribua à vontade. Versões modificadas distribuídas precisam continuar abertas.
+
+<div align="center">
+<sub>Feito no Brasil 🇧🇷 · Se o projeto te interessa, deixe uma ⭐</sub>
+</div>

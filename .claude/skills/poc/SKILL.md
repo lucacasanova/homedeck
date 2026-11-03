@@ -1,17 +1,17 @@
 ---
 name: poc
-description: Conduz uma prova de conceito pra validar um risco listado em docs/planning/RISKS.md (ex. R1 descoberta Tizen, R2 TLS, R4 gamepad, R6 Tauri Android TV). Use quando o usuário pedir "POC", "testar se funciona na TV", "validar risco", ou antes de começar uma fase que depende de risco aberto.
+description: Conduz uma prova de conceito pra validar um risco técnico do homedeck (issues com labels type:risk / type:poc no GitHub, ex. R1 descoberta Tizen #38, R2 TLS #39, R5 codecs #40, R6 Tauri Android TV #47). Use quando o usuário pedir "POC", "testar se funciona na TV", "validar risco", ou antes de começar trabalho que depende de risco aberto.
 ---
 
 # POC de risco
 
-1. Identifique o risco (`Rn`) em `docs/planning/RISKS.md`. Se não existe, adicione a linha primeiro.
-2. Branch `poc/rn-descricao`. Código em `poc/rn-descricao/` na raiz. Código de POC **não** vai pra `apps/`, `crates/` nem `packages/`.
-3. Escreva o critério de sucesso antes de codar: o que observar, em qual dispositivo/versão.
+1. Ache a issue: `gh issue list --label type:risk`. Se o risco não tem issue, crie uma com `type:risk,type:poc`, a plataforma e `priority:p0`.
+2. Branch `poc/N-descricao`. O código vai em `poc/N-descricao/` na raiz, **nunca** em `apps/`, `crates/` ou `packages/`.
+3. Antes de codar, comente na issue o critério de sucesso: o que observar e em qual dispositivo/versão.
 4. Faça o mínimo pra responder a pergunta. Sem arquitetura, sem polimento.
-5. Peça ao usuário pra rodar no dispositivo real quando precisar (TV, celular). Registre modelo, ano e versão do SO.
-6. Registre o resultado em `docs/planning/RISKS.md`:
-   - Coluna de status: `validado ✅`, `falhou ❌ → plano B` ou `parcial ⚠️`.
-   - Uma seção `## Rn — resultado` com data, dispositivo, o que funcionou e o que não funcionou.
-7. Se o resultado muda a arquitetura → skill `adr`.
-8. Commit `test(poc): Rn resultado` e PR. O código da POC pode ser apagado depois do merge; o registro em RISKS.md fica.
+5. Quando precisar de dispositivo real (TV, celular), peça ao usuário pra rodar e registre modelo, ano e versão do SO.
+6. Registre o resultado como comentário na issue:
+   - `✅ validado`, `❌ falhou → plano B` ou `⚠️ parcial`
+   - data, dispositivo, o que funcionou, o que não funcionou, logs relevantes
+7. Se o resultado muda a arquitetura → skill `adr`, e link do ADR na issue.
+8. Feche a issue com `gh issue close N --reason completed`. O código da POC pode ficar fora do merge; o registro na issue é o que importa.

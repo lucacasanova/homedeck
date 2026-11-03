@@ -8,7 +8,7 @@ description: Registra uma decisão de arquitetura do homedeck como ADR em docs/a
 1. Liste `docs/adr/` e pegue o próximo número (4 dígitos).
 2. Copie `docs/adr/0000-template.md` pra `docs/adr/NNNN-titulo-em-kebab.md`.
 3. Preencha:
-   - **Contexto:** problema e restrições reais (plataformas afetadas, riscos de `RISKS.md`).
+   - **Contexto:** problema e restrições reais (plataformas afetadas, issues `type:risk` relacionadas).
    - **Decisão:** uma frase clara.
    - **Alternativas:** pelo menos 2, com o motivo do descarte.
    - **Consequências:** o que melhora e o que piora.
