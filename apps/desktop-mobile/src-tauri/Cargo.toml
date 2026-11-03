@@ -1,0 +1,25 @@
+[package]
+name = "homedeck-app"
+description = "homedeck desktop and mobile shell (Tauri 2)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[lib]
+# `_lib` suffix avoids a name clash with the binary on Windows (cargo#8519).
+name = "homedeck_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+homedeck-core = { path = "../../../crates/core" }

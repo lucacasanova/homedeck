@@ -1,0 +1,232 @@
+/* homedeck shell — values from docs/design/GUIA-DE-MARCA.md and @homedeck/ui/tokens.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-family);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ---------- scene ---------- */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, #060607 0%, #121215 55%, #09090b 100%);
+}
+.moon-glow {
+  position: absolute;
+  top: 2%;
+  right: 14%;
+  width: 46vmin;
+  height: 46vmin;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    transparent 70%
+  );
+}
+.moon {
+  position: absolute;
+  top: 9%;
+  right: 21%;
+  width: 22vmin;
+  height: 22vmin;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+}
+.ridges {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 55%;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* ---------- glass (brand guide recipe) ---------- */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.07) 38%,
+    rgba(255, 255, 255, 0.035) 62%,
+    rgba(255, 255, 255, 0.09) 100%
+  );
+  backdrop-filter: blur(var(--blur, 30px)) saturate(115%) brightness(1.12);
+  -webkit-backdrop-filter: blur(var(--blur, 30px)) saturate(115%) brightness(1.12);
+  box-shadow:
+    0 50px 90px -30px rgba(0, 0, 0, 0.75),
+    0 18px 40px -18px rgba(0, 0, 0, 0.55),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.42),
+    inset 0 0 40px rgba(255, 255, 255, 0.035);
+}
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--rim, 1.6px);
+  pointer-events: none;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.85),
+    rgba(255, 255, 255, 0.14) 28%,
+    rgba(255, 255, 255, 0.03) 55%,
+    rgba(255, 255, 255, 0.12) 78%,
+    rgba(255, 255, 255, 0.55)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 70% at 18% -10%, rgba(255, 255, 255, 0.22), transparent 55%);
+}
+.glass > * {
+  position: relative;
+  z-index: 1;
+}
+.glass.solid {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(232, 232, 236, 0.88));
+  color: var(--on-accent);
+  box-shadow:
+    0 10px 30px -8px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(255, 255, 255, 0.18),
+    inset 0 1px 0 #fff;
+}
+/* light mode for weak GPUs (TV): no backdrop-filter */
+.light .glass:not(.solid) {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--glass-light);
+}
+
+/* ---------- focus: the only highlight in remote navigation ---------- */
+.is-focused,
+:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+  box-shadow: var(--focus-glow);
+  transform: scale(var(--focus-scale));
+}
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+/* ---------- layout ---------- */
+.app {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 4vh 5vw;
+  gap: 4vh;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo {
+  height: 40px;
+  width: auto;
+  margin-right: auto;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
+}
+.navbar {
+  --blur: 24px;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: var(--radius-pill);
+}
+.tab {
+  padding: 12px 26px;
+  border-radius: var(--radius-pill);
+  font-size: 20px;
+  color: var(--ink-2);
+}
+.tab[aria-selected="true"] {
+  color: var(--on-accent);
+  font-weight: 500;
+}
+.content {
+  display: grid;
+  place-items: center;
+}
+.panel {
+  --blur: 34px;
+  width: min(880px, 90vw);
+  padding: 56px 64px;
+  border-radius: var(--radius-window);
+}
+.overline {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+}
+.headline {
+  font-weight: 300;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: -0.027em;
+  line-height: 1.05;
+}
+.headline strong {
+  font-weight: 500;
+  color: var(--accent);
+}
+.lead {
+  margin: 20px 0 36px;
+  font-size: 22px;
+  color: var(--ink-2);
+  max-width: 40ch;
+}
+.cta {
+  padding: 16px 32px;
+  border-radius: var(--radius-pill);
+  font-size: 20px;
+  font-weight: 500;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  color: var(--ink-3);
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "homedeck",
+  "mainBinaryName": "homedeck",
+  "identifier": "io.github.lucacasanova.homedeck",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "homedeck",
+        "width": 1280,
+        "height": 720,
+        "minWidth": 960,
+        "minHeight": 540,
+        "fullscreen": true,
+        "backgroundColor": "#0B0B0D"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data: blob: asset: http://asset.localhost; media-src 'self' blob: asset: http://asset.localhost; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["appimage", "deb", "rpm"],
+    "category": "Video",
+    "shortDescription": "Sua central de mídia local, com cara de console",
+    "longDescription": "Central de mídia local P2P, estilo console, para Linux, Android, Android TV e Samsung TV.",
+    "license": "GPL-3.0-or-later",
+    "homepage": "https://github.com/lucacasanova/homedeck",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
+      "deb": {
+        "desktopTemplate": "../../../assets/brand/linux/homedeck.desktop"
+      },
+      "rpm": {
+        "desktopTemplate": "../../../assets/brand/linux/homedeck.desktop"
+      }
+    }
+  }
+}
