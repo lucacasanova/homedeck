@@ -21,3 +21,4 @@ Siga o ADR 0007 (`docs/adr/0007-versionamento-e-releases.md`).
    - `SHA256SUMS` + assinatura + attestation.
    - AUR: atualize o `pkgver` do pacote `homedeck-bin`.
 6. Feche o milestone se a release completa ele, e rode a skill `sync`.
+7. Use a skill `announce` pra publicar a novidade no Discussions e linke o anúncio nas notas da release.

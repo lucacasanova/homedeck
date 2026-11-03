@@ -14,7 +14,8 @@ MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mí
 - Idioma dos docs: PT-BR. Código, identificadores e mensagens de commit: inglês.
 - Commits: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `ci:`). Escopo = área (`feat(dedup): ...`).
 - Nunca commitar direto na `main`. Branch `tipo/N-descricao-curta` + PR. Commits com `-s` (DCO).
-- Nunca fazer merge de PR nem publicar release: isso é do usuário.
+- Merge de PR e publicação de release só com autorização explícita do mantenedor. O `settings.json` bloqueia `gh pr merge` e `gh release create` pro Claude; o mantenedor faz pela interface ou com `!`.
+- Navegador: o Playwright MCP pode ser usado pra tarefas que só existem na interface do GitHub (board, fixar discussion, configurações). Saídas ficam em `.playwright-mcp/` (ignorado pelo git).
 - Decisão de arquitetura nova → criar ADR em `docs/adr/` a partir do `0000-template.md`.
 - Todo trabalho tem issue. PR fecha a issue com `Closes #N`; merge por squash.
 - Nunca apagar arquivo do usuário em código: usar quarentena.
@@ -37,6 +38,7 @@ Usar sempre:
 - `sync`: status a partir de milestones/issues/PRs; usar ao começar e terminar sessão
 - `triage`: organizar issues novas (labels, milestone, épico, board)
 - `release`: preparar release (ADR 0007); merge e tag são do usuário
+- `announce`: anúncios no Discussions → Announcements (milestone concluído, release, ADR importante, chamada de testadores, mudança de privacidade)
 
 ## Agentes do projeto (`.claude/agents/`)
 - `reviewer`: revisão independente antes do PR (somente leitura)
