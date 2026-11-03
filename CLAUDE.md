@@ -5,10 +5,10 @@ Guia pro Claude (e pra humanos) trabalharem neste repo.
 ## Projeto
 homedeck: central de mídia local P2P, estilo console, multiplataforma. Ler antes de mexer:
 `docs/planning/VISION.md`, `docs/planning/ARCHITECTURE.md`, `docs/design/DESIGN.md`.
-Planejamento (roadmap, tarefas, riscos) vive no GitHub: milestones M0–M5 + "Later", um épico por milestone, tarefas como sub-issues.
+Planejamento (roadmap, tarefas, riscos) vive no GitHub: milestones M0–M5 (MVP) e M6–M10 (pós-MVP); board em https://github.com/users/lucacasanova/projects/2, um épico por milestone, tarefas como sub-issues.
 
 ## Prioridade atual
-MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mídia** (vídeo, música, imagem) + rede local + cast. Gestão de arquivos (dedup/espaço), jogos e outras plataformas têm label `later`: não implementar sem o usuário pedir.
+MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mídia** (vídeo, música, imagem) + rede local + cast. Gestão de arquivos (M6), jogos (M7), Windows/macOS/iOS (M8), lojas (M9) e modo console (M10) são **pós-MVP** (label `pós-mvp`): fazem parte do escopo e não podem ser descartados, mas não devem ser implementados sem o usuário pedir. Ideia nova fora do MVP → issue `pós-mvp` no milestone certo. Nunca jogar uma ideia fora.
 
 ## Regras
 - Idioma dos docs: PT-BR. Código, identificadores e mensagens de commit: inglês.

@@ -48,10 +48,12 @@ O **homedeck** resolve isso com três ideias:
 - 📺 **Tocar em outro dispositivo** e controle remoto entre eles
 - 🪟 **Visual de vidro translúcido** sobre um papel de parede escolhido em cada dispositivo ([design](docs/design/DESIGN.md))
 
-### Depois do MVP
-- 🧹 Gestão de arquivos: duplicados (com quarentena, nunca apaga direto) e painel de espaço ([#58](https://github.com/lucacasanova/homedeck/issues/58))
-- 🕹️ Jogos do PC na TV com controle Xbox, via Sunshine/Moonlight ([#59](https://github.com/lucacasanova/homedeck/issues/59))
-- 🐧 Sessão Linux que inicia direto no homedeck, estilo SteamOS ([#62](https://github.com/lucacasanova/homedeck/issues/62))
+### 🔭 Pós-MVP (no escopo, com milestones próprios)
+- 🧹 **Gestão de arquivos:** duplicados exatos e quase-duplicados, também entre dispositivos; quarentena com desfazer (nunca apaga direto); painel de espaço; reconversão para H.265/AV1. [M6](https://github.com/lucacasanova/homedeck/milestone/8)
+- 🕹️ **Jogos do PC na TV:** listar Steam, Heroic e Lutris; abrir pelo controle; streaming via Sunshine/Moonlight com controle Xbox ligado na TV. [M7](https://github.com/lucacasanova/homedeck/milestone/9)
+- 🪟 **Windows, macOS e iOS.** [M8](https://github.com/lucacasanova/homedeck/milestone/10)
+- 🏪 **Lojas oficiais:** Play Store, Samsung Apps, Flathub e App Store. [M9](https://github.com/lucacasanova/homedeck/milestone/11)
+- 🐧 **Modo console:** sessão Linux que inicia direto no homedeck (estilo SteamOS), kiosk no Windows e launcher na Android TV. [M10](https://github.com/lucacasanova/homedeck/milestone/12)
 
 ## 📱 Plataformas
 
@@ -61,12 +63,15 @@ O **homedeck** resolve isso com três ideias:
 | 🤖 Android | **MVP** | 📋 planejado | APK (GitHub Releases) |
 | 📺 Android TV | **MVP** | 📋 planejado | APK |
 | 📺 Samsung TV (Tizen) | **MVP** | 📋 planejado | `.wgt` (modo desenvolvedor) |
-| 🪟 Windows · 🍎 macOS · 📱 iOS | depois | 💤 [#60](https://github.com/lucacasanova/homedeck/issues/60) | — |
-| 🏪 Play Store · Samsung Apps · Flathub | depois | 💤 [#61](https://github.com/lucacasanova/homedeck/issues/61) | — |
+| 🪟 Windows · 🍎 macOS | pós-MVP | 🔭 [M8](https://github.com/lucacasanova/homedeck/milestone/10) | .msi, .dmg |
+| 📱 iOS | pós-MVP | 🔭 [M8](https://github.com/lucacasanova/homedeck/milestone/10) | App Store |
+| 🏪 Play Store · Samsung Apps · Flathub | pós-MVP | 🔭 [M9](https://github.com/lucacasanova/homedeck/milestone/11) | lojas oficiais |
 
 ## 🏆 Conquistas
 
 O progresso é atualizado automaticamente a partir dos milestones do GitHub.
+
+#### 🎯 MVP
 
 | Marco | O que entrega | Progresso |
 |---|---|---|
@@ -77,18 +82,34 @@ O progresso é atualizado automaticamente a partir dos milestones do GitHub.
 | [M4 — Android e Android TV](https://github.com/lucacasanova/homedeck/milestone/5) | Celular e Android TV | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/5?style=flat-square&color=d4f75a) |
 | [M5 — Cast e controle remoto](https://github.com/lucacasanova/homedeck/milestone/6) | "Tocar em…" e controle remoto | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/6?style=flat-square&color=d4f75a) |
 
+#### 🔭 Pós-MVP
+
+As ideias abaixo fazem parte do projeto e já têm milestone e issues. Começam depois do MVP.
+
+| Marco | O que entrega | Progresso |
+|---|---|---|
+| [M6 — Gestão de arquivos](https://github.com/lucacasanova/homedeck/milestone/8) | Duplicados, quarentena, espaço, reconversão | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/8?style=flat-square&color=c2a4f5) |
+| [M7 — Jogos](https://github.com/lucacasanova/homedeck/milestone/9) | Jogos do PC na TV com controle Xbox | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/9?style=flat-square&color=c2a4f5) |
+| [M8 — Windows, macOS e iOS](https://github.com/lucacasanova/homedeck/milestone/10) | Novas plataformas | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/10?style=flat-square&color=c2a4f5) |
+| [M9 — Lojas e distribuição](https://github.com/lucacasanova/homedeck/milestone/11) | Play Store, Samsung Apps, Flathub, App Store | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/11?style=flat-square&color=c2a4f5) |
+| [M10 — Modo console](https://github.com/lucacasanova/homedeck/milestone/12) | Sessão estilo SteamOS, kiosk, launcher | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/12?style=flat-square&color=c2a4f5) |
+
 ## 🗺️ Roadmap
 
 O planejamento fica **no GitHub**, não em arquivos:
 
+- **[Board do projeto](https://github.com/users/lucacasanova/projects/2):** Kanban com Backlog → Pronto pra começar → Em andamento → Em revisão → Feito.
 - **[Milestones](https://github.com/lucacasanova/homedeck/milestones):** fases com critério de pronto.
 - **[Issues](https://github.com/lucacasanova/homedeck/issues):** cada milestone tem um épico, e as tarefas são sub-issues dele.
-- **Labels:** `type:*`, `area:*`, `platform:*`, `priority:p0–p2`, `later`.
+- **Labels:** `type:*`, `area:*`, `platform:*`, `priority:p0–p2`, `pós-mvp`.
 - **Riscos técnicos:** issues com `type:risk` e `type:poc`, validados em dispositivo real antes do código definitivo.
 
 ```
+MVP
 M0 Fundação ─► M1 Player Linux ─► M2 Rede local ─┬─► M3 Tizen ──────┐
                                                  └─► M4 Android/TV ─┴─► M5 Cast
+Pós-MVP
+M6 Gestão de arquivos · M7 Jogos · M8 Windows/macOS/iOS · M9 Lojas · M10 Modo console
 ```
 
 ## 🧱 Arquitetura

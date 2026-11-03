@@ -31,12 +31,15 @@ Instalar o homedeck em cada dispositivo e pronto: eles se acham na rede, cada um
 - **Plataformas:** Linux (Manjaro primeiro), Android, Android TV e Samsung TV (Tizen).
 - **Escopo:** reproduzir vídeo, música e imagem, localmente e entre dispositivos da rede, com pareamento seguro e cast.
 
-## Depois do MVP (label `later`)
+## Pós-MVP (label `pós-mvp`, milestones M6–M10)
 
-- Gestão de arquivos: duplicados, quarentena, painel de espaço.
-- Jogos do PC na TV (Sunshine/Moonlight).
-- Windows, macOS, iOS e publicação nas lojas.
-- Sessão Linux estilo SteamOS.
+Essas ideias fazem parte da visão do projeto e têm milestones próprios. Só começam depois do MVP.
+
+- **M6 — Gestão de arquivos:** duplicados (exatos, quase-duplicados, entre dispositivos), quarentena, painel de espaço, reconversão.
+- **M7 — Jogos:** listar e abrir jogos do PC pela TV; streaming com controle Xbox ligado na TV (Sunshine/Moonlight).
+- **M8 — Windows, macOS e iOS.**
+- **M9 — Lojas:** Play Store, Samsung Apps, Flathub, App Store.
+- **M10 — Modo console:** sessão Linux estilo SteamOS, kiosk no Windows, launcher na Android TV.
 
 ## Fora do escopo
 
