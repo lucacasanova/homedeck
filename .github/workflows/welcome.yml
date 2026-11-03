@@ -1,0 +1,34 @@
+name: Welcome
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@1c4688942c71f71d4f5502a26ea67c331730fa4d # v3.1.0
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_message: |
+            Obrigado pela primeira issue no **homedeck**! 🎮
+
+            Vamos fazer a triagem em breve (labels, milestone e board). Enquanto isso:
+            - Dúvidas de uso ficam melhor em [Discussions → Q&A](https://github.com/lucacasanova/homedeck/discussions/categories/q-a).
+            - Falha de segurança? Use o [reporte privado](https://github.com/lucacasanova/homedeck/security/advisories/new), nunca issue pública.
+          pr_message: |
+            Obrigado pelo primeiro PR no **homedeck**! 🎮
+
+            Confira se:
+            - o título segue [Conventional Commits](https://www.conventionalcommits.org/pt-br/) (ex.: `feat(player): add shuffle`);
+            - todos os commits estão assinados com `git commit -s` ([DCO](https://developercertificate.org/));
+            - o PR tem `Closes #N`.
+
+            Detalhes no [CONTRIBUTING.md](https://github.com/lucacasanova/homedeck/blob/main/CONTRIBUTING.md). Um mantenedor vai revisar em breve.
