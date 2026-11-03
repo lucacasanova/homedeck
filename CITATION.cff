@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use or reference homedeck, please cite it as below."
+title: "homedeck"
+abstract: "Open-source, console-style local media center that connects PC, Android, Android TV and Samsung (Tizen) TVs peer-to-peer over the home network, with no server and no cloud."
+type: software
+authors:
+  - name: "homedeck contributors"
+repository-code: "https://github.com/lucacasanova/homedeck"
+url: "https://lucacasanova.github.io/homedeck/"
+license: GPL-3.0-or-later
+keywords:
+  - media center
+  - local-first
+  - peer-to-peer
+  - smart TV
+  - Tizen
+  - Android TV
+  - Tauri
+  - Rust

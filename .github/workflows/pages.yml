@@ -1,0 +1,45 @@
+name: Site (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", "assets/brand/web/**", "assets/brand/github/**", "assets/brand/logo/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - name: Assemble site from site/ and the brand kit
+        run: |
+          mkdir -p _site/fonts
+          cp -r site/. _site/
+          cp assets/brand/web/*.png assets/brand/web/*.ico assets/brand/web/*.svg assets/brand/web/og-image.jpg _site/
+          cp assets/brand/github/readme-banner.png _site/
+          cp assets/brand/logo/homedeck-logo-horizontal-white.svg _site/logo-white.svg
+          cp assets/brand/fonts/outfit-latin-{300,400,500}-normal.woff2 _site/fonts/
+          # The kit's manifest uses root paths; the site lives under /homedeck/.
+          sed -e 's#"src": "/#"src": "/homedeck/#g' -e 's#"start_url": "/"#"start_url": "/homedeck/"#' \
+            assets/brand/web/site.webmanifest > _site/site.webmanifest
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
