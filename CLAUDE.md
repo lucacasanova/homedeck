@@ -25,6 +25,8 @@ MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mí
 - **Rede:** no MVP só rede local. Nenhum nó escuta na internet; acesso remoto é M11 (ADR 0005).
 - **Jogos:** somente originais, pelo launcher oficial (ADR 0006). Recuse ROMs, cracks e contorno de DRM.
 - **Versão:** SemVer único no monorepo, 0.x até o MVP (ADR 0007).
+- **Telemetria (ADR 0008):** opt-in, desligada por padrão. Evento novo só entra se estiver em `docs/privacy/TELEMETRY.md` no mesmo PR, com propriedades só de enum/faixa. Nunca enviar caminho, nome de arquivo, título de mídia, nome de dispositivo, conta, IP ou ID permanente. PR com telemetria passa pelo `security-reviewer`.
+- **Público x privado:** código, catálogo de eventos e política ficam neste repo público. Dados, dashboards, infra e credenciais ficam no repo privado `lucacasanova/homedeck-ops`. Nunca copiar dados de telemetria, segredos ou análises privadas pra este repo, pra issues ou pra PRs.
 
 ## Skills do projeto (`.claude/skills/`)
 Usar sempre:

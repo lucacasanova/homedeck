@@ -16,6 +16,8 @@ Verifique, citando `arquivo:linha`:
 - falta de limite de tentativas em login ou PIN;
 - sessão sem expiração/revogação;
 - desserialização de dados da rede sem limite de tamanho;
-- qualquer escuta em interface pública ou abertura de porta no roteador.
+- qualquer escuta em interface pública ou abertura de porta no roteador;
+- telemetria: evento fora de `docs/privacy/TELEMETRY.md`, propriedade com texto livre, caminho, nome de mídia/dispositivo/conta, ID permanente, envio sem checar consentimento, ou envio em build de dev/CI;
+- segredo, chave ou dado do repo privado `homedeck-ops` aparecendo no código público.
 
 Não edite nada. Responda com o veredito e os achados por gravidade (crítico, alto, médio, baixo).
