@@ -6,6 +6,7 @@
   "bump-patch-for-minor-pre-major": false,
   "packages": {
     ".": {
+      "initial-version": "0.1.0",
       "release-type": "simple",
       "package-name": "homedeck",
       "changelog-path": "CHANGELOG.md",
