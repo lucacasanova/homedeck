@@ -1,0 +1,22 @@
+name: Bug
+description: Algo não funciona como deveria
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: what
+    attributes: { label: O que aconteceu, description: E o que você esperava }
+    validations: { required: true }
+  - type: textarea
+    id: steps
+    attributes: { label: Passos pra reproduzir }
+    validations: { required: true }
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma
+      multiple: true
+      options: [Windows, macOS, Linux, Android, Android TV, iOS, Tizen]
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes: { label: Versão do homedeck }
