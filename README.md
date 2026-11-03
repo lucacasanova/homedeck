@@ -137,7 +137,7 @@ M6 Gestão de arquivos · M7 Jogos · M8 Windows/macOS/iOS · M9 Lojas · M10 Mo
 | Camada | Tecnologia |
 |---|---|
 | Core | Rust, SQLite, ffmpeg/ffprobe |
-| UI | Web (framework a decidir em [#3](https://github.com/lucacasanova/homedeck/issues/3)) com spatial navigation |
+| UI | React + Vite + TypeScript, navegação por controle com Norigin Spatial Navigation ([ADR 0009](docs/adr/0009-ui-react-vite.md)) |
 | Casco | Tauri 2 · web app Tizen |
 | Rede | mDNS/DNS-SD, HTTP Range, HLS, WebSocket, TLS com certificado fixado |
 
