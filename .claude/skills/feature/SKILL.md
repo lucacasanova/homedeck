@@ -10,7 +10,9 @@ O planejamento vive no GitHub (milestones + épicos + sub-issues). Siga as etapa
 ## 1. Situar
 - Ache a issue: `gh issue view N` ou `gh issue list --milestone "<M>" --label priority:p0`.
 - Sem issue? Crie uma antes de começar (`gh issue create`), com labels `type:*`, `area:*`, `platform:*`, `priority:*`, o milestone certo e como sub-issue do épico (`gh api -X POST repos/{owner}/{repo}/issues/<épico>/sub_issues -F sub_issue_id=<id>`).
-- A tarefa tem label `later` ou não cabe no milestone atual? Pare e pergunte ao usuário.
+- Toda issue nova entra no board: `gh project item-add 2 --owner lucacasanova --url <url>`.
+- A tarefa tem label `pós-mvp` ou não cabe no milestone atual? Pare e pergunte ao usuário. Ideia nova fora do MVP vira issue `pós-mvp` no milestone M6–M10 certo, nunca é descartada.
+- Ao começar, mova o card no board pra "Em andamento"; ao abrir o PR, pra "Em revisão".
 - Se depende de uma issue `type:risk` aberta, rode antes a skill `poc`.
 - Comente na issue que começou: `gh issue comment N -b "Começando."`.
 

@@ -8,13 +8,13 @@
 │        │  IPC (Tauri) / HTTP+WS (Tizen)                             │
 │  Core (crates/core, Rust)                                           │
 │   ├─ indexer     → varre pastas, ffprobe, thumbnails                │
-│   ├─ dedup       → (later) tamanho → hash parcial → BLAKE3          │
-│   ├─ storage     → (later) uso de disco, quarentena                 │
+│   ├─ dedup       → (pós-MVP) tamanho → hash parcial → BLAKE3        │
+│   ├─ storage     → (pós-MVP) uso de disco, quarentena               │
 │   ├─ stream      → HTTP Range + HLS (ffmpeg) quando o codec exige   │
 │   ├─ discovery   → mDNS/DNS-SD `_homedeck._tcp` (+ fallbacks)       │
 │   ├─ pairing     → PIN/QR, troca de chaves, TLS com cert fixado     │
 │   ├─ control     → WebSocket: comandos (play, pause, seek, browse)  │
-│   └─ games       → (later) bibliotecas de jogos, Sunshine           │
+│   └─ games       → (pós-MVP) bibliotecas de jogos, Sunshine         │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
