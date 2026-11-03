@@ -32,6 +32,13 @@ Entram no escopo:
 - execução remota de código;
 - artefatos de release adulterados.
 
+## Contribuições externas
+
+- Workflows de PRs de fork só rodam depois da aprovação do mantenedor.
+- Todo PR passa pelo pré-scan (`.github/scripts/pr_prescan.py`), que lê o diff pela API sem executar o código e procura: caracteres invisíveis, `curl | sh`, blobs ofuscados, binários, scripts de instalação, domínios e APIs sensíveis novos, e alterações em áreas críticas.
+- A revisão de dependências bloqueia vulnerabilidades moderadas ou piores e licenças incompatíveis com a GPL.
+- O mantenedor revisa todo PR externo sem executar o código localmente.
+
 ## Princípios do projeto
 
 - Nó não pareado e usuário não logado só acessam `/api/v1/info`.

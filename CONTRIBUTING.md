@@ -27,6 +27,14 @@ Discussão (opcional) → Issue → Backlog → Pronto pra começar → Em andam
 4. Abra o PR com o template, título em Conventional Commits e `Closes #N`.
 5. O CI precisa passar e um mantenedor revisa. O merge é por squash.
 
+### O que acontece com o seu PR
+
+1. **Aprovação dos workflows:** em PR de fork, o mantenedor aprova a execução do CI antes de ele rodar.
+2. **Checagens automáticas:** título (Conventional Commits), assinatura (DCO), **pré-scan de segurança** (comenta no PR o que precisa de atenção) e **revisão de dependências** (vulnerabilidades e licenças).
+3. **Revisão do mantenedor:** com foco em segurança e escopo. PRs que mexem em `.github/`, `.claude/`, build, dependências ou privacidade levam mais tempo.
+
+Evite no seu PR: binários, código minificado ou ofuscado, scripts de instalação (`postinstall`), domínios novos sem explicação e mudanças fora do escopo da issue.
+
 ## Regras do projeto
 
 - UI precisa funcionar só com setas + OK + voltar.

@@ -1,0 +1,46 @@
+name: PR security
+
+# pull_request_target runs with the BASE branch code and a write token, so it
+# must never check out or execute code from the PR. The pre-scan only reads the
+# diff through the API. dependency-review runs on pull_request (read-only).
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, edited]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  prescan:
+    name: Security pre-scan
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout base branch (trusted code only)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+          sparse-checkout: .github/scripts
+      - name: Scan PR diff
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_IS_FORK: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+        run: python3 .github/scripts/pr_prescan.py
+
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: moderate
+          # GPL-3.0-or-later project: reject licences that cannot be combined with it.
+          deny-licenses: SSPL-1.0, BUSL-1.1, CC-BY-NC-4.0, CC-BY-NC-SA-4.0, Elastic-2.0

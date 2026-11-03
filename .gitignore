@@ -30,3 +30,6 @@ assets/brand/fonte/dist/
 assets/brand/fonte/node_modules/
 assets/brand/fonte/ic/
 assets/brand/fonte/*.png
+
+__pycache__/
+*.pyc
