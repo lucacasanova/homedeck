@@ -1,0 +1,11 @@
+node_modules
+dist
+target
+pnpm-lock.yaml
+CHANGELOG.md
+assets/brand
+.playwright-mcp
+src-tauri/gen
+*.md
+.github
+.claude

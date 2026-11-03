@@ -1,0 +1,29 @@
+/* Design tokens — keep in sync with src/tokens.ts (tested). Source: docs/design/GUIA-DE-MARCA.md */
+:root {
+  --bg: #0b0b0d;
+  --bg-deep: #08080a;
+  --surface: #16161a;
+  --surface-2: #1a1a1e;
+  --ink: #f4f4f5;
+  --ink-2: rgba(244, 244, 245, 0.62);
+  --ink-3: rgba(244, 244, 245, 0.38);
+  --accent: #ffffff;
+  --on-accent: #0c0c0e;
+  --glass-light: rgba(30, 30, 34, 0.85);
+
+  --radius-card: 20px;
+  --radius-window: 28px;
+  --radius-pill: 999px;
+  --radius-node: 50%;
+
+  --blur-chip: 14px;
+  --blur-card: 18px;
+  --blur-window: 34px;
+
+  --font-family: Outfit, Inter, system-ui, sans-serif;
+
+  --focus-outline: 2.5px solid #fff;
+  --focus-outline-offset: 3px;
+  --focus-glow: 0 0 40px rgba(255, 255, 255, 0.28);
+  --focus-scale: 1.03;
+}
