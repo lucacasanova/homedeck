@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=homedeck
+GenericName=Central de mídia
+Comment=Sua central de mídia local, com cara de console
+Exec=homedeck %U
+Icon=homedeck
+Terminal=false
+Categories=AudioVideo;Player;Video;Audio;
+Keywords=media;player;video;music;tv;p2p;
+StartupWMClass=homedeck

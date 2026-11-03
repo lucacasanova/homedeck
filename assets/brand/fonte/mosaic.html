@@ -1,0 +1,82 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="common.css">
+<style>
+#stage{width:3240px;height:1440px}
+.node{border-radius:50%;width:300px;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;--blur:26px}
+.node .lbl{font-size:36px;font-weight:400;letter-spacing:.2px}
+.node svg.icon{color:#fff;filter:drop-shadow(0 0 14px rgba(255,255,255,.35))}
+.h1{position:absolute;left:96px;top:118px;font-size:132px;line-height:1.02;letter-spacing:-3.5px;font-weight:300}
+.h1 .dim{color:rgba(244,244,245,.42)}
+.h1 .hi{color:#fff;font-weight:500;text-shadow:0 0 50px rgba(255,255,255,.25)}
+.sub{position:absolute;font-size:36px;font-weight:300;color:var(--ink-2);line-height:1.35}
+.foot{position:absolute;bottom:72px;font-size:27px;font-weight:400;color:var(--ink-3);letter-spacing:.3px}
+.eyebrow{font-size:24px;letter-spacing:6px;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.pill{border-radius:999px;height:128px;display:flex;align-items:center;padding:0 18px 0 46px;gap:22px;--blur:34px}
+.pill .txt{font-size:40px;font-weight:400;flex:1;white-space:nowrap}
+.pill .btn{height:92px;border-radius:999px;padding:0 44px;display:flex;align-items:center;font-size:36px;font-weight:500}
+.brand{position:absolute;display:flex;align-items:center;gap:26px}
+.brand .word{font-size:92px;font-weight:500;letter-spacing:-2.5px}
+</style></head><body>
+<div id="stage">
+  <canvas id="scene"></canvas>
+  <svg class="layer" width="3240" height="1440" style="z-index:3">
+    <defs>
+      <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+      <radialGradient id="dot"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g stroke="#fff" stroke-linecap="round" fill="none">
+      <path d="M540 1030 L1620 600 L2700 1030" stroke-width="16" opacity=".35" filter="url(#glow)"/>
+      <path d="M540 1030 L1620 600 L2700 1030" stroke-width="5" opacity=".85"/>
+    </g>
+    <!-- packets travelling -->
+    <circle cx="860" cy="903" r="22" fill="url(#dot)"/>
+    <circle cx="2380" cy="903" r="22" fill="url(#dot)"/>
+  </svg>
+
+  <div class="layer" id="ui">
+    <!-- ===== Tile 1 ===== -->
+    <div class="h1"><span class="dim">Sem pendrive.</span><br><span class="dim">Sem servidor.</span><br><span class="hi">Sem nuvem.</span></div>
+    <div class="sub" style="left:100px;top:560px;width:820px">PC, celular e TV se encontram<br>sozinhos na rede de casa.</div>
+    <div class="glass node" style="left:390px;top:880px"><span id="i-pc"></span><span class="lbl">PC</span></div>
+    <div class="foot" style="left:100px">Linux · Android · Android TV · Tizen</div>
+
+    <!-- ===== Tile 2 ===== -->
+    <div style="position:absolute;left:1080px;width:1080px;top:150px;text-align:center">
+      <div class="eyebrow">P2P · sem conta · sem nuvem</div>
+      <div style="font-size:64px;font-weight:300;letter-spacing:-1.5px;margin-top:22px">Um toque. <span style="font-weight:500">Outra tela.</span></div>
+    </div>
+    <div class="glass node" style="left:1470px;top:450px"><span id="i-tv"></span><span class="lbl">TV-sala</span></div>
+    <div class="glass pill" style="left:1190px;top:1151px;width:860px">
+      <span id="i-check" style="color:#fff;display:flex"></span>
+      <span class="txt">Tocando na TV-sala</span>
+      <span class="glass solid btn">Desfazer</span>
+    </div>
+
+    <!-- ===== Tile 3 ===== -->
+    <div class="brand" style="left:2256px;top:132px"><span id="m-brand"></span><span class="word">homedeck</span></div>
+    <div class="sub" style="left:2258px;top:290px;width:860px;font-size:52px;line-height:1.18;color:var(--ink);letter-spacing:-.8px">Sua central de mídia local,<br>com cara de console.</div>
+    <div class="glass node" style="left:2550px;top:880px"><span id="i-phone"></span><span class="lbl">Celular</span></div>
+    <div class="foot" style="left:2160px;width:1080px;text-align:center;bottom:64px;line-height:1.5">Código aberto · GPL-3.0 · em desenvolvimento<br><span style="color:var(--ink-2)">github.com/lucacasanova/homedeck</span></div>
+  </div>
+  <canvas id="grain"></canvas>
+</div>
+<script src="common.js"></script>
+<script>
+document.getElementById('i-pc').innerHTML=icon('pc',96,1.4);
+document.getElementById('i-tv').innerHTML=icon('tv',96,1.4);
+document.getElementById('i-phone').innerHTML=icon('phone',96,1.4);
+document.getElementById('i-check').innerHTML=icon('check',46,2.2);
+document.getElementById('m-brand').innerHTML=markSVG(104);
+drawScene(document.getElementById('scene'),{
+  W:3240,H:1440,worldW:3240,worldH:1440,stars:true,vignette:.5,
+  glows:[{x:1640,y:560,r:1500,a:.30},{x:540,y:1000,r:520,a:.10},{x:2700,y:1000,r:520,a:.10}],
+  moon:{x:1760,y:500,r:165,a:.9},
+  ridges:[
+    {y:900,amp:300,freq:.00062,seed:11,color:'#1e1e22',colorTop:'#34343a',mist:.11,rim:.14},
+    {y:1040,amp:230,freq:.0009,seed:23,color:'#141417',colorTop:'#222227',mist:.08,rim:.07},
+    {y:1190,amp:160,freq:.0013,seed:37,color:'#0d0d10',colorTop:'#17171a',mist:.05},
+    {y:1350,amp:100,freq:.0019,seed:51,color:'#070708',colorTop:'#0d0d0f'}
+  ]
+});
+drawGrain(document.getElementById('grain'),3240,1440,.10);
+</script></body></html>

@@ -24,3 +24,9 @@ Thumbs.db
 
 # Playwright MCP (snapshots/screenshots do navegador)
 .playwright-mcp/
+
+# Saída dos scripts do kit de marca
+assets/brand/fonte/dist/
+assets/brand/fonte/node_modules/
+assets/brand/fonte/ic/
+assets/brand/fonte/*.png
