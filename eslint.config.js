@@ -11,6 +11,7 @@ export default tseslint.config(
       "**/src-tauri/gen/**",
       "assets/brand/fonte/**",
       ".playwright-mcp/**",
+      ".ui-check/**",
       ".github/scripts/**",
     ],
   },
