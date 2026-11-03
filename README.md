@@ -157,6 +157,7 @@ Este projeto é desenvolvido com [Claude Code](https://claude.com/claude-code), 
 | [`.claude/skills/sync`](.claude/skills/sync/SKILL.md) | Status do projeto a partir das issues e milestones |
 | [`.claude/skills/triage`](.claude/skills/triage/SKILL.md) | Triagem de issues novas: labels, milestone, épico e board |
 | [`.claude/skills/release`](.claude/skills/release/SKILL.md) | Release seguindo o ADR 0007 |
+| [`.claude/skills/review-contribution`](.claude/skills/review-contribution/SKILL.md) | Revisão de segurança de PRs da comunidade, sem executar o código |
 | [`.claude/skills/announce`](.claude/skills/announce/SKILL.md) | Anúncios no Discussions (milestones, releases, testadores) |
 | [`.claude/agents/reviewer`](.claude/agents/reviewer.md) | Agente revisor independente (somente leitura) |
 | [`.claude/agents/security-reviewer`](.claude/agents/security-reviewer.md) | Agente de revisão de segurança |
