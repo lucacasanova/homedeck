@@ -14,7 +14,7 @@ description: Mostra e sincroniza o status do homedeck a partir do GitHub (milest
    - PR mergeado sem `Closes #N` → feche a issue certa com `--reason completed`.
    - Issue em andamento sem comentário/branch → pergunte ao usuário.
    - Trabalho feito sem issue → ofereça criar e já fechar.
-3. Milestone com todas as issues fechadas e critério "Pronto quando" (descrição do milestone) atendido → avise e proponha fechar: `gh api -X PATCH repos/{owner}/{repo}/milestones/N -f state=closed`.
+3. Milestone com todas as issues fechadas e critério "Pronto quando" (descrição do milestone) atendido → avise e proponha fechar: `gh api -X PATCH repos/{owner}/{repo}/milestones/N -f state=closed`. Depois de fechar, use a skill `announce`.
 4. Responda com um resumo curto:
    - milestone atual e progresso (x/y)
    - últimas issues fechadas
