@@ -25,7 +25,6 @@
       "Bash(pnpm build:*)"
     ],
     "deny": [
-      "Bash(gh pr merge:*)",
       "Bash(gh release create:*)",
       "Bash(gh repo delete:*)",
       "Read(./.env)",

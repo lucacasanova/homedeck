@@ -164,7 +164,7 @@ Este projeto é desenvolvido com [Claude Code](https://claude.com/claude-code), 
 | [`.claude/hooks/session-status.sh`](.claude/hooks/session-status.sh) | Mostra o status do projeto ao abrir o Claude |
 | [`.claude/hooks/guard-git.sh`](.claude/hooks/guard-git.sh) | Bloqueia commit na `main`, force-push e commit fora do padrão |
 
-Todo código passa por PR e revisão humana; o Claude nunca faz merge nem publica releases. Commits feitos com Claude levam `Co-Authored-By`. Veja a [política de contribuições com IA](CONTRIBUTING.md#contribuições-com-ia).
+Todo código passa por PR, checks automáticos e revisão. O Claude só faz merge com os checks verdes e, em PR da comunidade, só depois da análise de segurança e da aprovação do mantenedor; releases são sempre publicadas pelo mantenedor. Commits feitos com Claude levam `Co-Authored-By`. Veja a [política de contribuições com IA](CONTRIBUTING.md#contribuições-com-ia).
 
 ## 🔢 Versionamento e releases
 
