@@ -61,6 +61,7 @@ RISKY_API = re.compile(
     r"WebSocket\s*\(|fetch\s*\(|setuid|chmod\s+\+x|base64\s+-d|atob\s*\()"
 )
 TELEMETRY_API = re.compile(r"\b(aptabase|track_event|trackEvent|telemetry::|sentry|glitchtip)\b", re.I)
+SVG_ACTIVE = re.compile(r"<script|\son[a-z]+\s*=|javascript:|<foreignObject", re.I)
 INSTALL_HOOKS = re.compile(r'"(preinstall|install|postinstall|prepare|prepublish)"\s*:')
 
 BINARY_EXT = re.compile(r"\.(exe|dll|so|dylib|bin|jar|class|wasm|apk|aab|ipa|deb|rpm|msi|pyc|o|a|node)$", re.I)
@@ -105,6 +106,7 @@ def scan(files):
     for f in files:
         name, status = f["filename"], f["status"]
         is_asset = name.startswith("assets/")
+        is_svg = name.lower().endswith(".svg")
         is_doc = name.endswith(".md")
 
         for rx, why in SENSITIVE_PATHS:
@@ -124,7 +126,9 @@ def scan(files):
                 critical.append((name, ln, "caractere invisível/bidirecional (possível Trojan Source)"))
             if PIPE_TO_SHELL.search(text):
                 critical.append((name, ln, "download executado direto pelo shell (pipe para sh/bash)"))
-            if not is_asset and LONG_BLOB.search(text):
+            if is_svg and SVG_ACTIVE.search(text):
+                critical.append((name, ln, "SVG com script, evento ou link javascript (pode executar código)"))
+            if not is_asset and not is_svg and LONG_BLOB.search(text):
                 critical.append((name, ln, "bloco longo codificado (base64/ofuscado)"))
             if not is_doc and RISKY_API.search(text):
                 review.append((name, ln, f"API sensível: `{RISKY_API.search(text).group(0).strip()}`"))

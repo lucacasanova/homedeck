@@ -44,3 +44,6 @@ jobs:
           fail-on-severity: moderate
           # GPL-3.0-or-later project: reject licences that cannot be combined with it.
           deny-licenses: SSPL-1.0, BUSL-1.1, CC-BY-NC-4.0, CC-BY-NC-SA-4.0, Elastic-2.0
+          # Documented exceptions only. GHSA-wrw7-89jp-8q8g: glib 0.18 via Tauri/gtk-rs, unused API,
+          # no upgrade path until Tauri moves to gtk-rs >= 0.20. Tracked in #155.
+          allow-ghsas: GHSA-wrw7-89jp-8q8g
