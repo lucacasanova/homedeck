@@ -14,6 +14,7 @@
 │   ├─ discovery   → mDNS/DNS-SD `_homedeck._tcp` (+ fallbacks)       │
 │   ├─ pairing     → PIN/QR, troca de chaves, TLS com cert fixado     │
 │   ├─ control     → WebSocket: comandos (play, pause, seek, browse)  │
+│   ├─ telemetry   → opt-in, allowlist do TELEMETRY.md, lote offline  │
 │   └─ games       → (pós-MVP) bibliotecas de jogos, Sunshine         │
 └─────────────────────────────────────────────────────────────────────┘
 ```

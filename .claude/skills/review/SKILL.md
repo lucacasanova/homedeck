@@ -13,6 +13,8 @@ Rode `git diff main...HEAD` (ou o diff do PR) e confira cada item. Reporte só o
 - [ ] Caminho vindo da rede é validado (sem `..`, sem sair das pastas da biblioteca).
 
 ## Dados do usuário
+- [ ] Evento de telemetria novo ou alterado está em `docs/privacy/TELEMETRY.md`, só com propriedades enum/faixa, e respeita o consentimento.
+- [ ] Nenhum dado de telemetria, segredo ou análise do repo privado foi copiado pra cá.
 - [ ] Nada apaga arquivo direto. Remoção = mover pra quarentena com desfazer.
 - [ ] Operação longa (hash, scan, transcode) é cancelável e não trava a UI.
 

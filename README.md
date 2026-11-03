@@ -164,6 +164,13 @@ Todo código passa por PR e revisão humana; o Claude nunca faz merge nem public
 - **CHANGELOG** e releases gerados automaticamente a partir dos Conventional Commits.
 - **Artefatos assinados**, com `SHA256SUMS` e attestation de build.
 
+## 🕵️ Privacidade e telemetria
+
+- Sua mídia, contas e configurações **nunca saem dos seus dispositivos**.
+- A telemetria é **opcional e vem desligada**. No primeiro uso você escolhe; dá pra mudar a qualquer momento.
+- O que pode ser enviado está todo listado em [TELEMETRY.md](docs/privacy/TELEMETRY.md): dados anônimos, sem IP, sem identificador e sem nada sobre o seu conteúdo.
+- Veja a [Política de Privacidade](PRIVACY.md) e o [ADR 0008](docs/adr/0008-telemetria.md).
+
 ## 🔒 Segurança
 
 Encontrou uma falha? **Não abra issue pública.** Use o [reporte privado](https://github.com/lucacasanova/homedeck/security/advisories/new). Veja o [SECURITY.md](SECURITY.md).
