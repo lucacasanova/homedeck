@@ -33,3 +33,6 @@ assets/brand/fonte/*.png
 
 __pycache__/
 *.pyc
+
+# Tauri
+apps/desktop-mobile/dist/
