@@ -8,6 +8,13 @@
     "node": ">=22"
   },
   "scripts": {
+    "dev": "pnpm --filter @homedeck/app tauri dev",
+    "dev:web": "pnpm --filter @homedeck/app dev",
+    "check": "bash scripts/check.sh",
+    "fix": "prettier --write . && cargo fmt --all && cargo clippy --workspace --all-targets --fix --allow-dirty --allow-staged -q",
+    "env:check": "bash scripts/doctor.sh",
+    "ui:check": "node scripts/ui-check.mjs",
+    "build:linux": "cd apps/desktop-mobile && NO_STRIP=true pnpm tauri build --bundles appimage deb",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "typecheck": "pnpm -r typecheck",

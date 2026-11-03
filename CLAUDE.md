@@ -40,6 +40,7 @@ Usar sempre:
 - `triage`: organizar issues novas (labels, milestone, épico, board)
 - `release`: preparar release (ADR 0007); merge e tag são do usuário
 - `review-contribution`: revisão de segurança de PR da comunidade. **Nunca executa código do PR**; usa o pré-scan, os agentes `security-reviewer` e `reviewer` e devolve o veredito. Aprovação e merge só com o "sim" do mantenedor
+- `dev`: rodar, verificar (incluindo visualmente) e depurar localmente
 - `announce`: anúncios no Discussions → Announcements (milestone concluído, release, ADR importante, chamada de testadores, mudança de privacidade)
 
 ## Agentes do projeto (`.claude/agents/`)
@@ -58,14 +59,18 @@ Hooks:
 - `apps/tizen`: web app Samsung TV
 
 ## Comandos
-Requisitos: Rust estável (via `rust-toolchain.toml`), Node ≥ 22 e pnpm 12 (`npm i -g pnpm --prefix ~/.local` se faltar).
+Detalhes e troubleshooting: skill `dev`.
 
-| Ação | Rust | JS/TS |
-|---|---|---|
-| Instalar | — | `pnpm install` |
-| Testar | `cargo test --workspace` | `pnpm test` |
-| Lint | `cargo clippy --workspace --all-targets -- -D warnings` | `pnpm lint` (eslint + prettier) |
-| Formatar | `cargo fmt --all` | `pnpm format` |
-| Tipos | — | `pnpm typecheck` |
+| Ação | Comando |
+|---|---|
+| Conferir ambiente | `pnpm env:check` |
+| App nativo (hot reload) | `pnpm dev` |
+| Só a UI no navegador | `pnpm dev:web` |
+| **Tudo que o CI roda** | `pnpm check` (`--rust` / `--js`) |
+| Corrigir formatação/clippy | `pnpm fix` |
+| Print + teste de navegação da UI | `pnpm ui:check` (saída em `.ui-check/`) |
+| Pacotes Linux | `pnpm build:linux` |
+
+Requisitos: Rust estável, Node ≥ 22, pnpm 12 (`~/.local/bin` no PATH). O hook `format.sh` formata cada arquivo editado pelo Claude.
 
 Antes de abrir PR, rode tudo isso e cole a saída real.

@@ -36,3 +36,6 @@ __pycache__/
 
 # Tauri
 apps/desktop-mobile/dist/
+
+# pnpm ui:check output
+.ui-check/
