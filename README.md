@@ -1,15 +1,22 @@
 <div align="center">
 
-# 🎮 homedeck
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/brand/logo/homedeck-logo-horizontal-white.svg">
+  <img src="assets/brand/logo/homedeck-logo-horizontal-black.svg" alt="homedeck" height="64">
+</picture>
+
+<br>
+
+<img src="assets/brand/github/readme-banner.png" alt="homedeck — sua central de mídia local, com cara de console" width="100%">
 
 **Sua central de mídia local, com cara de console, em todos os seus dispositivos e sem servidor.**
 
 Instale no PC, no celular e na TV. Eles se encontram sozinhos na rede de casa, e qualquer um mostra e controla a mídia dos outros.
 
-[![Stars](https://img.shields.io/github/stars/lucacasanova/homedeck?style=for-the-badge&logo=github&color=d4f75a&labelColor=141a05)](https://github.com/lucacasanova/homedeck/stargazers)
-[![Forks](https://img.shields.io/github/forks/lucacasanova/homedeck?style=for-the-badge&logo=github&color=d4f75a&labelColor=141a05)](https://github.com/lucacasanova/homedeck/network/members)
-[![Issues](https://img.shields.io/github/issues/lucacasanova/homedeck?style=for-the-badge&color=d4f75a&labelColor=141a05)](https://github.com/lucacasanova/homedeck/issues)
-[![License](https://img.shields.io/github/license/lucacasanova/homedeck?style=for-the-badge&color=d4f75a&labelColor=141a05)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/lucacasanova/homedeck?style=for-the-badge&logo=github&color=F4F4F5&labelColor=1A1A1E)](https://github.com/lucacasanova/homedeck/stargazers)
+[![Forks](https://img.shields.io/github/forks/lucacasanova/homedeck?style=for-the-badge&logo=github&color=F4F4F5&labelColor=1A1A1E)](https://github.com/lucacasanova/homedeck/network/members)
+[![Issues](https://img.shields.io/github/issues/lucacasanova/homedeck?style=for-the-badge&color=F4F4F5&labelColor=1A1A1E)](https://github.com/lucacasanova/homedeck/issues)
+[![License](https://img.shields.io/github/license/lucacasanova/homedeck?style=for-the-badge&color=F4F4F5&labelColor=1A1A1E)](LICENSE)
 
 [![Last commit](https://img.shields.io/github/last-commit/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck/commits/main)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck/pulse)
@@ -46,7 +53,7 @@ O **homedeck** resolve isso com três ideias:
 - 📡 **Descoberta automática** de dispositivos na rede local (mDNS)
 - 🔐 **Login e senha em todos os dispositivos**, pareamento por PIN, conexão criptografada, perfis com PIN e login na TV pelo celular
 - 📺 **Tocar em outro dispositivo** e controle remoto entre eles
-- 🪟 **Visual de vidro translúcido** sobre um papel de parede escolhido em cada dispositivo ([design](docs/design/DESIGN.md))
+- 🪟 **Visual monocromático de vidro** sobre uma paisagem noturna ou o papel de parede de cada dispositivo ([design](docs/design/DESIGN.md) · [guia de marca](docs/design/GUIA-DE-MARCA.md))
 
 ### 🔭 Pós-MVP (no escopo, com milestones próprios)
 - 🧹 **Gestão de arquivos:** duplicados exatos e quase-duplicados, também entre dispositivos; quarentena com desfazer (nunca apaga direto); painel de espaço; reconversão para H.265/AV1. [M6](https://github.com/lucacasanova/homedeck/milestone/8)
@@ -76,12 +83,12 @@ O progresso é atualizado automaticamente a partir dos milestones do GitHub.
 
 | Marco | O que entrega | Progresso |
 |---|---|---|
-| [M0 — Fundação](https://github.com/lucacasanova/homedeck/milestone/1) | Workspace, casco Tauri, CI Linux/Android | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/1?style=flat-square&color=d4f75a) |
-| [M1 — Player Linux](https://github.com/lucacasanova/homedeck/milestone/2) | Biblioteca + vídeo, música e imagem no Manjaro | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/2?style=flat-square&color=d4f75a) |
-| [M2 — Rede local](https://github.com/lucacasanova/homedeck/milestone/3) | Descoberta, pareamento, streaming entre PCs | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/3?style=flat-square&color=d4f75a) |
-| [M3 — Tizen](https://github.com/lucacasanova/homedeck/milestone/4) | TV Samsung tocando mídia do PC | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/4?style=flat-square&color=d4f75a) |
-| [M4 — Android e Android TV](https://github.com/lucacasanova/homedeck/milestone/5) | Celular e Android TV | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/5?style=flat-square&color=d4f75a) |
-| [M5 — Cast e controle remoto](https://github.com/lucacasanova/homedeck/milestone/6) | "Tocar em…" e controle remoto | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/6?style=flat-square&color=d4f75a) |
+| [M0 — Fundação](https://github.com/lucacasanova/homedeck/milestone/1) | Workspace, casco Tauri, CI Linux/Android | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/1?style=flat-square&color=F4F4F5) |
+| [M1 — Player Linux](https://github.com/lucacasanova/homedeck/milestone/2) | Biblioteca + vídeo, música e imagem no Manjaro | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/2?style=flat-square&color=F4F4F5) |
+| [M2 — Rede local](https://github.com/lucacasanova/homedeck/milestone/3) | Descoberta, pareamento, streaming entre PCs | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/3?style=flat-square&color=F4F4F5) |
+| [M3 — Tizen](https://github.com/lucacasanova/homedeck/milestone/4) | TV Samsung tocando mídia do PC | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/4?style=flat-square&color=F4F4F5) |
+| [M4 — Android e Android TV](https://github.com/lucacasanova/homedeck/milestone/5) | Celular e Android TV | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/5?style=flat-square&color=F4F4F5) |
+| [M5 — Cast e controle remoto](https://github.com/lucacasanova/homedeck/milestone/6) | "Tocar em…" e controle remoto | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/6?style=flat-square&color=F4F4F5) |
 
 #### 🔭 Pós-MVP
 
@@ -89,12 +96,12 @@ As ideias abaixo fazem parte do projeto e já têm milestone e issues. Começam 
 
 | Marco | O que entrega | Progresso |
 |---|---|---|
-| [M6 — Gestão de arquivos](https://github.com/lucacasanova/homedeck/milestone/8) | Duplicados, quarentena, espaço, reconversão | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/8?style=flat-square&color=c2a4f5) |
-| [M7 — Jogos](https://github.com/lucacasanova/homedeck/milestone/9) | Jogos do PC na TV com controle Xbox | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/9?style=flat-square&color=c2a4f5) |
-| [M8 — Windows, macOS e iOS](https://github.com/lucacasanova/homedeck/milestone/10) | Novas plataformas | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/10?style=flat-square&color=c2a4f5) |
-| [M9 — Lojas e distribuição](https://github.com/lucacasanova/homedeck/milestone/11) | Play Store, Samsung Apps, Flathub, App Store | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/11?style=flat-square&color=c2a4f5) |
-| [M10 — Modo console](https://github.com/lucacasanova/homedeck/milestone/12) | Sessão estilo SteamOS, kiosk, launcher | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/12?style=flat-square&color=c2a4f5) |
-| [M11 — Acesso remoto e painel web](https://github.com/lucacasanova/homedeck/milestone/13) | Configurar e assistir fora de casa | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/13?style=flat-square&color=c2a4f5) |
+| [M6 — Gestão de arquivos](https://github.com/lucacasanova/homedeck/milestone/8) | Duplicados, quarentena, espaço, reconversão | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/8?style=flat-square&color=8E8E93) |
+| [M7 — Jogos](https://github.com/lucacasanova/homedeck/milestone/9) | Jogos do PC na TV com controle Xbox | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/9?style=flat-square&color=8E8E93) |
+| [M8 — Windows, macOS e iOS](https://github.com/lucacasanova/homedeck/milestone/10) | Novas plataformas | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/10?style=flat-square&color=8E8E93) |
+| [M9 — Lojas e distribuição](https://github.com/lucacasanova/homedeck/milestone/11) | Play Store, Samsung Apps, Flathub, App Store | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/11?style=flat-square&color=8E8E93) |
+| [M10 — Modo console](https://github.com/lucacasanova/homedeck/milestone/12) | Sessão estilo SteamOS, kiosk, launcher | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/12?style=flat-square&color=8E8E93) |
+| [M11 — Acesso remoto e painel web](https://github.com/lucacasanova/homedeck/milestone/13) | Configurar e assistir fora de casa | ![](https://img.shields.io/github/milestones/progress-percent/lucacasanova/homedeck/13?style=flat-square&color=8E8E93) |
 
 ## 🗺️ Roadmap
 
@@ -134,7 +141,7 @@ M6 Gestão de arquivos · M7 Jogos · M8 Windows/macOS/iOS · M9 Lojas · M10 Mo
 | Casco | Tauri 2 · web app Tizen |
 | Rede | mDNS/DNS-SD, HTTP Range, HLS, WebSocket, TLS com certificado fixado |
 
-Detalhes: [ARCHITECTURE.md](docs/planning/ARCHITECTURE.md) · [Visão](docs/planning/VISION.md) · [Design](docs/design/DESIGN.md) · [ADRs](docs/adr/)
+Detalhes: [ARCHITECTURE.md](docs/planning/ARCHITECTURE.md) · [Visão](docs/planning/VISION.md) · [Design](docs/design/DESIGN.md) · [Guia de marca](docs/design/GUIA-DE-MARCA.md) · [ADRs](docs/adr/)
 
 ## 🤖 Desenvolvido com Claude
 
@@ -201,7 +208,9 @@ Dúvidas e ideias: [Discussions](https://github.com/lucacasanova/homedeck/discus
 
 ## 📄 Licença
 
-[GPL-3.0-or-later](LICENSE). Use, estude, modifique e distribua à vontade. Versões modificadas distribuídas precisam continuar abertas.
+Código: [GPL-3.0-or-later](LICENSE). Fonte Outfit: [SIL OFL 1.1](assets/brand/fonts/OFL.txt). Marca (nome, logo e ícones): uso livre pra falar do projeto, mas não para identificar outro produto.
+
+Use, estude, modifique e distribua à vontade. Versões modificadas distribuídas precisam continuar abertas.
 
 <div align="center">
 <sub>Feito no Brasil 🇧🇷 · Se o projeto te interessa, deixe uma ⭐</sub>

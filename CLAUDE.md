@@ -20,7 +20,7 @@ MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mí
 - Todo trabalho tem issue. PR fecha a issue com `Closes #N`; merge por squash.
 - Nunca apagar arquivo do usuário em código: usar quarentena.
 - Toda UI precisa funcionar só com setas + OK + voltar.
-- UI segue `docs/design/DESIGN.md` (vidro translúcido, papel de parede por dispositivo, modo leve na TV).
+- UI segue `docs/design/DESIGN.md` e a marca segue `docs/design/GUIA-DE-MARCA.md` (fonte da verdade): monocromático grafite + branco, vidro, fonte Outfit. **Nenhuma cor de destaque.** Logos, ícones e fontes vêm de `assets/brand/` (mapa em `docs/design/BRAND.md`); nunca redesenhe ou recolora, e regenere peças com `assets/brand/fonte/build.sh`.
 - Endpoints novos → atualizar a seção de protocolo em `ARCHITECTURE.md`.
 - **Segurança:** todo acesso exige pareamento do dispositivo **e** login do usuário (ADR 0004). Só `/api/v1/info` é aberto. Senhas com Argon2id, nunca em log.
 - **Rede:** no MVP só rede local. Nenhum nó escuta na internet; acesso remoto é M11 (ADR 0005).

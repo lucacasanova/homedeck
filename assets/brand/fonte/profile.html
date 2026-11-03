@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="common.css">
+<style>
+#stage{width:1080px;height:1080px}
+.tile{left:200px;top:200px;width:680px;height:680px;border-radius:180px;display:flex;align-items:center;justify-content:center;--blur:30px;--rim:3px}
+.tile svg.mark{filter:drop-shadow(0 0 30px rgba(255,255,255,.35)) drop-shadow(0 10px 20px rgba(0,0,0,.35))}
+/* light variant */
+.light #stage{background:#e9e9ec}
+.light .tile{background:linear-gradient(155deg,rgba(255,255,255,.75),rgba(255,255,255,.35) 45%,rgba(255,255,255,.55));box-shadow:0 60px 100px -40px rgba(0,0,0,.35),inset 0 2px 0 #fff}
+.light .tile svg.mark{filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+</style></head><body>
+<div id="stage">
+  <canvas id="scene"></canvas>
+  <div class="layer"><div class="glass tile" id="t"></div></div>
+  <canvas id="grain"></canvas>
+</div>
+<script src="common.js"></script>
+<script>
+const light=new URLSearchParams(location.search).get('v')==='light';
+if(light)document.documentElement.classList.add('light');
+document.getElementById('t').innerHTML=markSVG(420,{fill:light?'#0c0c0e':'#ffffff'});
+if(!light){
+drawScene(document.getElementById('scene'),{
+  W:1080,H:1080,worldW:1080,worldH:1080,stars:true,vignette:.55,
+  glows:[{x:640,y:300,r:900,a:.34}],
+  moon:{x:790,y:250,r:150,a:.92},
+  ridges:[
+    {y:690,amp:200,freq:.0011,seed:11,color:'#1e1e22',colorTop:'#34343a',mist:.11,rim:.14},
+    {y:800,amp:150,freq:.0016,seed:23,color:'#141417',colorTop:'#222227',mist:.08,rim:.07},
+    {y:920,amp:100,freq:.0023,seed:37,color:'#0d0d10',colorTop:'#17171a',mist:.05},
+    {y:1030,amp:60,freq:.003,seed:51,color:'#070708',colorTop:'#0d0d0f'}
+  ]});
+}else{
+  const c=document.getElementById('scene');c.width=c.height=1080;const x=c.getContext('2d');
+  let g=x.createLinearGradient(0,0,0,1080);g.addColorStop(0,'#f6f6f7');g.addColorStop(1,'#c9c9ce');x.fillStyle=g;x.fillRect(0,0,1080,1080);
+  for(const [cx,cy,r,a] of [[300,280,420,.9],[800,820,460,.55]]){const rg=x.createRadialGradient(cx,cy,0,cx,cy,r);rg.addColorStop(0,`rgba(255,255,255,${a})`);rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,1080,1080);}
+  {const cx=790,cy=250,r=150;const rg=x.createRadialGradient(cx-40,cy-45,0,cx,cy,r);rg.addColorStop(0,'#3a3a40');rg.addColorStop(.9,'#18181b');rg.addColorStop(.985,'rgba(24,24,27,.7)');rg.addColorStop(1,'rgba(24,24,27,0)');x.fillStyle=rg;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();}
+}
+drawGrain(document.getElementById('grain'),1080,1080,light?.05:.09);
+</script></body></html>

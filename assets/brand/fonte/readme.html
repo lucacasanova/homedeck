@@ -1,0 +1,97 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="common.css">
+<style>
+html,body{background:transparent}
+#stage{width:1280px;height:640px;border-radius:var(--rad,28px);transform:translateZ(0)}
+.brand{position:absolute;left:72px;top:142px;display:flex;align-items:center;gap:16px}
+.brand .word{font-size:60px;font-weight:500;letter-spacing:-1.6px}
+.tag{position:absolute;left:74px;top:240px;font-size:42px;line-height:1.16;font-weight:300;letter-spacing:-.6px;width:480px}
+.sub{position:absolute;left:75px;top:376px;font-size:20px;line-height:1.45;color:var(--ink-2);font-weight:300}
+.chips{position:absolute;left:72px;top:458px;display:flex;gap:8px}
+.chip{position:relative;height:32px;border-radius:999px;padding:0 14px;display:flex;align-items:center;font-size:14.5px;color:var(--ink-2);--blur:14px;--rim:1px}
+
+.win{left:600px;top:96px;width:620px;height:410px;border-radius:30px;padding:22px;--blur:34px}
+.tabs{position:relative;display:flex;gap:4px;padding:6px;border-radius:999px;--blur:18px;--rim:1px;height:52px;align-items:center}
+.tab{height:40px;padding:0 18px;border-radius:999px;display:flex;align-items:center;font-size:17px;color:var(--ink-2)}
+.tab.on{--rim:1px}
+.sec{font-size:20px;font-weight:300;margin:22px 4px 14px;color:var(--ink)}
+.cards{display:flex;gap:14px}
+.card{position:relative;width:180px;height:150px;border-radius:20px;overflow:hidden;--rim:1px;--blur:20px}
+.card .thumb{position:absolute;inset:0}
+.card .meta{position:absolute;left:14px;right:14px;bottom:12px;display:flex;flex-direction:column;gap:2px}
+.card .t{font-size:16px;font-weight:500}
+.card .s{font-size:12.5px;color:var(--ink-2)}
+.card .ic{position:absolute;left:14px;top:14px;color:#fff}
+.card .bar{position:absolute;left:0;bottom:0;height:3px;background:#fff;box-shadow:0 0 10px #fff}
+.card.focus{outline:2.5px solid #fff;outline-offset:3px;box-shadow:0 0 0 7px rgba(255,255,255,.08),0 0 40px rgba(255,255,255,.28),0 30px 50px -20px #000;transform:scale(1.03)}
+.devs{display:flex;gap:8px;margin:18px 2px 0}
+.dev{position:relative;height:38px;border-radius:12px;padding:0 12px;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2);--rim:1px;--blur:14px}
+.dev .led{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff}
+.toast{left:742px;top:478px;height:60px;border-radius:999px;display:flex;align-items:center;gap:12px;padding:0 8px 0 22px;--blur:26px;z-index:8}
+.toast .txt{font-size:18px}
+.toast .btn{position:relative;height:44px;border-radius:999px;padding:0 20px;display:flex;align-items:center;font-size:16.5px;font-weight:500}
+</style></head><body>
+<div id="stage">
+  <canvas id="scene"></canvas>
+  <div class="layer">
+    <div class="brand"><span id="m"></span><span class="word">homedeck</span></div>
+    <div class="tag">Sua central de mídia local, com cara de console.</div>
+    <div class="sub">PC, celular e TV na rede de casa.<br>Sem servidor, sem conta, sem nuvem.</div>
+    <div class="chips">
+      <span class="glass chip">P2P via mDNS</span><span class="glass chip">Rust + Tauri</span><span class="glass chip">GPL-3.0</span>
+    </div>
+
+    <div class="glass win">
+      <div class="glass tabs">
+        <span class="glass solid tab on">Início</span><span class="tab">Vídeos</span><span class="tab">Músicas</span><span class="tab">Imagens</span><span class="tab">Dispositivos</span>
+      </div>
+      <div class="sec">Continuar de onde parou</div>
+      <div class="cards">
+        <div class="glass card focus"><div class="thumb" id="th1"></div><span class="ic" id="ic1"></span>
+          <div class="meta"><span class="t">Férias 2025</span><span class="s">Retomar em 42:17</span></div><span class="bar" style="width:62%"></span></div>
+        <div class="glass card"><div class="thumb" id="th2"></div><span class="ic" id="ic2"></span>
+          <div class="meta"><span class="t">Rock da faxina</span><span class="s">Playlist · 38 faixas</span></div></div>
+        <div class="glass card"><div class="thumb" id="th3"></div><span class="ic" id="ic3"></span>
+          <div class="meta"><span class="t">Fotos do sítio</span><span class="s">214 imagens</span></div></div>
+      </div>
+      <div class="devs">
+        <span class="glass dev"><span class="led"></span>TV-sala</span>
+        <span class="glass dev"><span class="led"></span>PC-escritório</span>
+        <span class="glass dev"><span class="led" style="opacity:.45;box-shadow:none"></span>Celular</span>
+      </div>
+    </div>
+    <div class="glass dark toast"><span id="ck" style="display:flex"></span><span class="txt">Tocando na TV-sala</span><span class="glass solid btn">Desfazer</span></div>
+  </div>
+  <canvas id="grain"></canvas>
+</div>
+<script src="common.js"></script>
+<script>
+const q=new URLSearchParams(location.search);
+if(q.get('square'))document.documentElement.style.setProperty('--rad','0px');
+const SH=+(q.get('h')||640);document.getElementById('stage').style.height=SH+'px';document.querySelector('.layer').style.top=((SH-640)/2)+'px';document.querySelector('.layer').style.bottom='auto';document.querySelector('.layer').style.height='640px';
+document.getElementById('m').innerHTML=markSVG(68);
+document.getElementById('ic1').innerHTML=icon('play',24,1.8);
+document.getElementById('ic2').innerHTML=icon('music',24,1.8);
+document.getElementById('ic3').innerHTML=icon('image',24,1.8);
+document.getElementById('ck').innerHTML=icon('check',22,2.2);
+drawScene(document.getElementById('scene'),{
+  W:1280,H:SH,worldW:1280,worldH:SH,stars:true,vignette:.45,
+  glows:[{x:900,y:220,r:820,a:.30},{x:240,y:300,r:500,a:.06}],
+  moon:{x:1010,y:150,r:92,a:.9},
+  ridges:[
+    {y:420,amp:130,freq:.0014,seed:11,color:'#1e1e22',colorTop:'#34343a',mist:.11,rim:.14},
+    {y:490,amp:100,freq:.002,seed:23,color:'#141417',colorTop:'#222227',mist:.08,rim:.07},
+    {y:560,amp:70,freq:.0028,seed:37,color:'#0d0d10',colorTop:'#17171a',mist:.05},
+    {y:620,amp:45,freq:.004,seed:51,color:'#070708',colorTop:'#0d0d0f'}
+  ]
+});
+// mini scenes as thumbnails (monochrome "photos")
+function thumb(id,o){const c=document.createElement('canvas');c.style.cssText='width:100%;height:100%;display:block';document.getElementById(id).appendChild(c);
+  drawScene(c,Object.assign({W:360,H:300,k:2,worldW:180,worldH:150,vignette:.6},o));
+  const sh=document.createElement('div');sh.style.cssText='position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.6))';document.getElementById(id).appendChild(sh);}
+thumb('th1',{glows:[{x:120,y:60,r:150,a:.55}],moon:{x:125,y:52,r:20,a:.9},ridges:[{y:95,amp:30,freq:.02,seed:3,color:'#2a2a2f',colorTop:'#4a4a52',mist:.15},{y:120,amp:20,freq:.03,seed:5,color:'#111114'}]});
+thumb('th2',{glows:[{x:90,y:70,r:120,a:.35}],ridges:[{y:150,amp:1,freq:.01,seed:1,color:'#000'}],vignette:.7});
+{const t=document.getElementById('th2');const d=document.createElement('div');d.style.cssText='position:absolute;left:62px;top:28px;width:96px;height:96px;border-radius:50%;background:repeating-radial-gradient(circle,#1b1b1e 0 2px,#26262a 2px 4px);box-shadow:0 0 0 1px rgba(255,255,255,.12),0 10px 30px #000';const l=document.createElement('div');l.style.cssText='position:absolute;left:33px;top:33px;width:30px;height:30px;border-radius:50%;background:#e9e9ec';d.appendChild(l);t.insertBefore(d,t.children[1]);}
+thumb('th3',{glows:[{x:40,y:40,r:160,a:.5}],ridges:[{y:85,amp:40,freq:.015,seed:9,color:'#3a3a40',colorTop:'#5a5a62',mist:.2,rim:.2},{y:110,amp:25,freq:.03,seed:13,color:'#1b1b1f',mist:.1},{y:135,amp:15,freq:.05,seed:17,color:'#0c0c0e'}]});
+drawGrain(document.getElementById('grain'),1280,SH,.08);
+</script></body></html>
