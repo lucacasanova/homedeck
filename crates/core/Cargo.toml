@@ -1,0 +1,15 @@
+[package]
+name = "homedeck-core"
+description = "Core of a homedeck node: library, playback, discovery, pairing and streaming"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]

@@ -58,4 +58,14 @@ Hooks:
 - `apps/tizen`: web app Samsung TV
 
 ## Comandos
-(preencher quando o workspace existir: build, teste, lint)
+Requisitos: Rust estável (via `rust-toolchain.toml`), Node ≥ 22 e pnpm 12 (`npm i -g pnpm --prefix ~/.local` se faltar).
+
+| Ação | Rust | JS/TS |
+|---|---|---|
+| Instalar | — | `pnpm install` |
+| Testar | `cargo test --workspace` | `pnpm test` |
+| Lint | `cargo clippy --workspace --all-targets -- -D warnings` | `pnpm lint` (eslint + prettier) |
+| Formatar | `cargo fmt --all` | `pnpm format` |
+| Tipos | — | `pnpm typecheck` |
+
+Antes de abrir PR, rode tudo isso e cole a saída real.
