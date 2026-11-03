@@ -1,108 +1,175 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>homedeck — central de mídia local com cara de console (PC, Android, TV Samsung)</title>
-  <meta name="description" content="homedeck é um app open source para assistir vídeos, músicas e fotos entre PC, celular Android, Android TV e TV Samsung (Tizen), direto na rede de casa. Sem servidor, sem conta, sem nuvem. Interface estilo console, navegável pelo controle.">
-  <meta name="keywords" content="central de mídia, media center, player de vídeo, TV Samsung, Tizen, Android TV, Linux, Manjaro, P2P, rede local, open source, Tauri, Rust">
-  <link rel="canonical" href="https://lucacasanova.github.io/homedeck/">
-  <link rel="alternate" hreflang="pt-BR" href="https://lucacasanova.github.io/homedeck/">
-  <link rel="alternate" hreflang="en" href="https://lucacasanova.github.io/homedeck/en/">
-  <link rel="alternate" hreflang="x-default" href="https://lucacasanova.github.io/homedeck/en/">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>homedeck — central de mídia local com cara de console (PC, Android, TV Samsung)</title>
+    <meta
+      name="description"
+      content="homedeck é um app open source para assistir vídeos, músicas e fotos entre PC, celular Android, Android TV e TV Samsung (Tizen), direto na rede de casa. Sem servidor, sem conta, sem nuvem. Interface estilo console, navegável pelo controle."
+    />
+    <meta
+      name="keywords"
+      content="central de mídia, media center, player de vídeo, TV Samsung, Tizen, Android TV, Linux, Manjaro, P2P, rede local, open source, Tauri, Rust"
+    />
+    <link rel="canonical" href="https://lucacasanova.github.io/homedeck/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://lucacasanova.github.io/homedeck/" />
+    <link rel="alternate" hreflang="en" href="https://lucacasanova.github.io/homedeck/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://lucacasanova.github.io/homedeck/en/" />
 
-  <link rel="icon" href="favicon.ico" sizes="48x48">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="favicon-96x96.png" type="image/png" sizes="96x96">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="manifest" href="site.webmanifest">
-  <meta name="theme-color" content="#0b0b0d">
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon-96x96.png" type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <meta name="theme-color" content="#0b0b0d" />
 
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="homedeck">
-  <meta property="og:locale" content="pt_BR">
-  <meta property="og:locale:alternate" content="en_US">
-  <meta property="og:url" content="https://lucacasanova.github.io/homedeck/">
-  <meta property="og:title" content="homedeck — sua central de mídia local, com cara de console">
-  <meta property="og:description" content="PC, celular e TV na rede de casa. Sem servidor, sem conta, sem nuvem. Open source.">
-  <meta property="og:image" content="https://lucacasanova.github.io/homedeck/og-image.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Interface do homedeck: painel de vidro com Início, Vídeos, Músicas, Imagens e Dispositivos">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://lucacasanova.github.io/homedeck/og-image.jpg">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="homedeck" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:url" content="https://lucacasanova.github.io/homedeck/" />
+    <meta
+      property="og:title"
+      content="homedeck — sua central de mídia local, com cara de console"
+    />
+    <meta
+      property="og:description"
+      content="PC, celular e TV na rede de casa. Sem servidor, sem conta, sem nuvem. Open source."
+    />
+    <meta property="og:image" content="https://lucacasanova.github.io/homedeck/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Interface do homedeck: painel de vidro com Início, Vídeos, Músicas, Imagens e Dispositivos"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://lucacasanova.github.io/homedeck/og-image.jpg" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "homedeck",
-    "description": "Central de mídia local open source, estilo console, que conecta PC, Android, Android TV e TVs Samsung (Tizen) pela rede de casa, sem servidor.",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "Linux, Android, Android TV, Tizen",
-    "license": "https://www.gnu.org/licenses/gpl-3.0.html",
-    "isAccessibleForFree": true,
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
-    "url": "https://lucacasanova.github.io/homedeck/",
-    "codeRepository": "https://github.com/lucacasanova/homedeck",
-    "image": "https://lucacasanova.github.io/homedeck/og-image.jpg",
-    "inLanguage": ["pt-BR", "en"],
-    "softwareHelp": "https://github.com/lucacasanova/homedeck/discussions"
-  }
-  </script>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="wrap">
-    <header class="top">
-      <a href="./" aria-label="homedeck — início"><img src="logo-white.svg" alt="homedeck" width="200" height="36"></a>
-      <a class="lang" href="en/" hreflang="en" lang="en">English</a>
-    </header>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "homedeck",
+        "description": "Central de mídia local open source, estilo console, que conecta PC, Android, Android TV e TVs Samsung (Tizen) pela rede de casa, sem servidor.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Linux, Android, Android TV, Tizen",
+        "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+        "url": "https://lucacasanova.github.io/homedeck/",
+        "codeRepository": "https://github.com/lucacasanova/homedeck",
+        "image": "https://lucacasanova.github.io/homedeck/og-image.jpg",
+        "inLanguage": ["pt-BR", "en"],
+        "softwareHelp": "https://github.com/lucacasanova/homedeck/discussions"
+      }
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <a href="./" aria-label="homedeck — início"
+          ><img src="logo-white.svg" alt="homedeck" width="200" height="36"
+        /></a>
+        <a class="lang" href="en/" hreflang="en" lang="en">English</a>
+      </header>
 
-    <main>
-      <section class="hero">
-        <p class="overline">Open source · em desenvolvimento</p>
-        <h1>Sua central de mídia local, <strong>com cara de console.</strong></h1>
-        <p class="lead">Vídeos, músicas e fotos entre PC, celular e TV, direto na rede de casa. Sem pendrive, sem servidor, sem nuvem.</p>
-        <div class="cta">
-          <a class="btn solid" href="https://github.com/lucacasanova/homedeck">Ver no GitHub</a>
-          <a class="btn glass" href="https://github.com/lucacasanova/homedeck/milestones">Roadmap</a>
-          <a class="btn glass" href="https://github.com/lucacasanova/homedeck/discussions">Comunidade</a>
-        </div>
-        <img class="banner" src="readme-banner.png" width="2560" height="1280"
-             alt="homedeck: painel de vidro com as abas Início, Vídeos, Músicas, Imagens e Dispositivos, e um aviso 'Tocando na TV-sala'">
-      </section>
+      <main>
+        <section class="hero">
+          <p class="overline">Open source · em desenvolvimento</p>
+          <h1>Sua central de mídia local, <strong>com cara de console.</strong></h1>
+          <p class="lead">
+            Vídeos, músicas e fotos entre PC, celular e TV, direto na rede de casa. Sem pendrive,
+            sem servidor, sem nuvem.
+          </p>
+          <div class="cta">
+            <a class="btn solid" href="https://github.com/lucacasanova/homedeck">Ver no GitHub</a>
+            <a class="btn glass" href="https://github.com/lucacasanova/homedeck/milestones"
+              >Roadmap</a
+            >
+            <a class="btn glass" href="https://github.com/lucacasanova/homedeck/discussions"
+              >Comunidade</a
+            >
+          </div>
+          <img
+            class="banner"
+            src="readme-banner.png"
+            width="2560"
+            height="1280"
+            alt="homedeck: painel de vidro com as abas Início, Vídeos, Músicas, Imagens e Dispositivos, e um aviso 'Tocando na TV-sala'"
+          />
+        </section>
 
-      <section>
-        <h2>Um toque. <strong>Outra tela.</strong></h2>
-        <div class="grid">
-          <article class="card glass"><h3>Interface de console</h3><p>Tela cheia, navegável só com o controle remoto, gamepad ou setas. Feita pro sofá.</p></article>
-          <article class="card glass"><h3>Vídeo, música e foto</h3><p>Legendas, faixas de áudio, fila de músicas, slideshow e continuar de onde parou.</p></article>
-          <article class="card glass"><h3>Sem servidor</h3><p>Cada aparelho é um nó. Eles se encontram sozinhos na rede de casa (mDNS) e trocam mídia direto.</p></article>
-          <article class="card glass"><h3>Tocar em outra tela</h3><p>Do celular ou do PC, mande a TV tocar e controle play, pausa e avanço.</p></article>
-          <article class="card glass"><h3>Seguro e privado</h3><p>Login em todos os aparelhos, pareamento por PIN e conexão criptografada. Nada sai da sua casa.</p></article>
-          <article class="card glass"><h3>Livre de verdade</h3><p>Código aberto sob GPL-3.0. Telemetria opcional, desligada por padrão e com catálogo público.</p></article>
-        </div>
-      </section>
+        <section>
+          <h2>Um toque. <strong>Outra tela.</strong></h2>
+          <div class="grid">
+            <article class="card glass">
+              <h3>Interface de console</h3>
+              <p>
+                Tela cheia, navegável só com o controle remoto, gamepad ou setas. Feita pro sofá.
+              </p>
+            </article>
+            <article class="card glass">
+              <h3>Vídeo, música e foto</h3>
+              <p>
+                Legendas, faixas de áudio, fila de músicas, slideshow e continuar de onde parou.
+              </p>
+            </article>
+            <article class="card glass">
+              <h3>Sem servidor</h3>
+              <p>
+                Cada aparelho é um nó. Eles se encontram sozinhos na rede de casa (mDNS) e trocam
+                mídia direto.
+              </p>
+            </article>
+            <article class="card glass">
+              <h3>Tocar em outra tela</h3>
+              <p>Do celular ou do PC, mande a TV tocar e controle play, pausa e avanço.</p>
+            </article>
+            <article class="card glass">
+              <h3>Seguro e privado</h3>
+              <p>
+                Login em todos os aparelhos, pareamento por PIN e conexão criptografada. Nada sai da
+                sua casa.
+              </p>
+            </article>
+            <article class="card glass">
+              <h3>Livre de verdade</h3>
+              <p>
+                Código aberto sob GPL-3.0. Telemetria opcional, desligada por padrão e com catálogo
+                público.
+              </p>
+            </article>
+          </div>
+        </section>
 
-      <section>
-        <h2>Onde roda</h2>
-        <div class="pills">
-          <span class="pill glass">Linux (Manjaro, Arch, Ubuntu, Fedora)</span>
-          <span class="pill glass">Android</span>
-          <span class="pill glass">Android TV</span>
-          <span class="pill glass">TV Samsung (Tizen)</span>
-          <span class="pill glass">Depois: Windows, macOS, iOS</span>
-        </div>
-      </section>
-    </main>
+        <section>
+          <h2>Onde roda</h2>
+          <div class="pills">
+            <span class="pill glass">Linux (Manjaro, Arch, Ubuntu, Fedora)</span>
+            <span class="pill glass">Android</span>
+            <span class="pill glass">Android TV</span>
+            <span class="pill glass">TV Samsung (Tizen)</span>
+            <span class="pill glass">Depois: Windows, macOS, iOS</span>
+          </div>
+        </section>
+      </main>
 
-    <footer>
-      <p>homedeck é software livre (<a href="https://github.com/lucacasanova/homedeck/blob/main/LICENSE">GPL-3.0-or-later</a>).
-      <a href="https://github.com/lucacasanova/homedeck/blob/main/PRIVACY.md">Privacidade</a> ·
-      <a href="https://github.com/lucacasanova/homedeck/blob/main/SECURITY.md">Segurança</a> ·
-      <a href="https://github.com/lucacasanova/homedeck/blob/main/CONTRIBUTING.md">Como contribuir</a></p>
-    </footer>
-  </div>
-</body>
+      <footer>
+        <p>
+          homedeck é software livre (<a
+            href="https://github.com/lucacasanova/homedeck/blob/main/LICENSE"
+            >GPL-3.0-or-later</a
+          >).
+          <a href="https://github.com/lucacasanova/homedeck/blob/main/PRIVACY.md">Privacidade</a> ·
+          <a href="https://github.com/lucacasanova/homedeck/blob/main/SECURITY.md">Segurança</a> ·
+          <a href="https://github.com/lucacasanova/homedeck/blob/main/CONTRIBUTING.md"
+            >Como contribuir</a
+          >
+        </p>
+      </footer>
+    </div>
+  </body>
 </html>
