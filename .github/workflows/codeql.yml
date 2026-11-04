@@ -5,14 +5,43 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "23 4 * * 1" # weekly, catches new queries on unchanged code
+    - cron: "23 4 * * 1" # weekly full scan, catches new queries on unchanged code
 
 permissions:
   contents: read
 
 jobs:
+  # On PRs, analyze only languages whose code changed; the job still reports
+  # (as passing) so branch protection is satisfied. main and the weekly run
+  # analyze everything.
+  changes:
+    name: Detect languages
+    runs-on: ubuntu-24.04
+    outputs:
+      langs: ${{ steps.f.outputs.langs }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: f
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT" != "pull_request" || -z "$BASE" ]]; then
+            echo "langs=rust javascript-typescript actions" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          files=$(git diff --name-only "$BASE" HEAD)
+          langs=""
+          grep -qE '\.rs$|(^|/)Cargo\.(toml|lock)$' <<<"$files" && langs+="rust "
+          grep -qE '\.(ts|tsx|js|mjs|cjs|html)$' <<<"$files" && langs+="javascript-typescript "
+          grep -qE '^\.github/(workflows|actions)/' <<<"$files" && langs+="actions "
+          echo "langs=$langs" >> "$GITHUB_OUTPUT"
+
   analyze:
     name: CodeQL (${{ matrix.language }})
+    needs: changes
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -23,14 +52,20 @@ jobs:
       matrix:
         language: [javascript-typescript, rust, actions]
     steps:
+      - name: Skip (no ${{ matrix.language }} changes)
+        if: ${{ !contains(needs.changes.outputs.langs, matrix.language) }}
+        run: echo "Nada de ${{ matrix.language }} mudou neste PR."
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: ${{ contains(needs.changes.outputs.langs, matrix.language) }}
         with:
           persist-credentials: false
       - uses: github/codeql-action/init@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+        if: ${{ contains(needs.changes.outputs.langs, matrix.language) }}
         with:
           languages: ${{ matrix.language }}
           build-mode: none
           queries: security-extended
       - uses: github/codeql-action/analyze@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+        if: ${{ contains(needs.changes.outputs.langs, matrix.language) }}
         with:
           category: /language:${{ matrix.language }}

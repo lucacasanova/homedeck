@@ -82,7 +82,7 @@ pnpm check       # everything CI runs
 
 ## Contributing
 
-Pick an issue labelled [`good first issue`](https://github.com/lucacasanova/homedeck/labels/good%20first%20issue), comment that you're on it, and follow [CONTRIBUTING.md](CONTRIBUTING.md): `type/N-name` branch, Conventional Commits signed off with `git commit -s` (DCO), PR linked to the issue. Every PR gets a security pre-scan, dependency review, CodeQL and an automated review. Found a vulnerability? Use [private reporting](https://github.com/lucacasanova/homedeck/security/advisories/new), never a public issue.
+Pick an issue labelled [`good first issue`](https://github.com/lucacasanova/homedeck/labels/good%20first%20issue), comment that you're on it, and follow [CONTRIBUTING.md](CONTRIBUTING.md): `type/N-name` branch, Conventional Commits signed off with `git commit -s` (DCO), PR linked to the issue. Every PR gets a security pre-scan, dependency review, CodeQL and, on request, a Claude review. Found a vulnerability? Use [private reporting](https://github.com/lucacasanova/homedeck/security/advisories/new), never a public issue.
 
 The project is built with [Claude Code](https://claude.com/claude-code); its rules, skills and hooks are versioned in [`CLAUDE.md`](CLAUDE.md) and [`.claude/`](.claude/).
 

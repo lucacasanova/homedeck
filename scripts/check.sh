@@ -32,6 +32,11 @@ if [[ "$only" != "--rust" ]]; then
   step "pnpm test" pnpm -s test
 fi
 
+# Lets the pre-push hook skip a second run for the same clean tree.
+if [[ $fail == 0 && -z "$only" && -z "$(git status --porcelain)" ]]; then
+  git rev-parse 'HEAD^{tree}' > "$(git rev-parse --git-dir)/homedeck-checked-tree"
+fi
+
 printf '\n\033[1mResumo\033[0m\n'
 printf '  %s\n' "${results[@]}"
 exit $fail

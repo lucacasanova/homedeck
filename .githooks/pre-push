@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Runs the local CI before pushing, so GitHub Actions only confirms.
+# Activate once per clone:  pnpm hooks:install
+# Skip once with:           SKIP_CHECK=1 git push   (or git push --no-verify)
+[[ "${SKIP_CHECK:-}" == 1 ]] && exit 0
+root=$(git rev-parse --show-toplevel)
+marker="$(git rev-parse --git-dir)/homedeck-checked-tree"
+tree=$(git rev-parse 'HEAD^{tree}')
+if [[ -z "$(git status --porcelain)" && -f "$marker" && "$(cat "$marker")" == "$tree" ]]; then
+  echo "pre-push: este código já passou no pnpm check, pulando."
+  exit 0
+fi
+echo "pre-push: rodando pnpm check (igual ao CI). Pule com SKIP_CHECK=1."
+export PATH="$HOME/.local/bin:$PATH"
+cd "$root" && pnpm -s check

@@ -20,8 +20,44 @@ env:
     libayatana-appindicator3-dev librsvg2-dev patchelf
 
 jobs:
+  # Decides which jobs this change needs. Skipped jobs count as passing for
+  # branch protection, so docs-only PRs do not run builds. Pushes to main run
+  # everything (keeps a fresh AppImage artifact for testing).
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-24.04
+    outputs:
+      rust: ${{ steps.f.outputs.rust }}
+      js: ${{ steps.f.outputs.js }}
+      app: ${{ steps.f.outputs.app }}
+      deps: ${{ steps.f.outputs.deps }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: f
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          all() { for k in rust js app deps; do echo "$k=true" >> "$GITHUB_OUTPUT"; done; exit 0; }
+          [[ "$EVENT" != "pull_request" || -z "$BASE" ]] && all
+          files=$(git diff --name-only "$BASE" HEAD)
+          echo "$files"
+          grep -qE '^\.github/workflows/ci\.yml$' <<<"$files" && all
+          has() { grep -qE "$1" <<<"$files" && echo "$2=true" || echo "$2=false"; }
+          {
+            has '^(crates/|apps/desktop-mobile/src-tauri/|Cargo\.(toml|lock)$|rust-toolchain\.toml$)' rust
+            has '^(apps/|packages/|scripts/|site/|package\.json$|pnpm-(lock|workspace)\.yaml$|tsconfig|eslint\.config|\.prettier)' js
+            has '^(crates/|apps/desktop-mobile/|packages/|Cargo\.(toml|lock)$|pnpm-lock\.yaml$|assets/brand/(tauri|linux|logo)/)' app
+            has '(^|/)Cargo\.(toml|lock)$|^deny\.toml$' deps
+          } >> "$GITHUB_OUTPUT"
+
   rust:
     name: Rust (fmt, clippy, test)
+    needs: changes
+    if: needs.changes.outputs.rust == 'true'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -40,6 +76,8 @@ jobs:
 
   js:
     name: JS (lint, types, test)
+    needs: changes
+    if: needs.changes.outputs.js == 'true'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -57,6 +95,8 @@ jobs:
 
   supply-chain:
     name: Supply chain (cargo-deny)
+    needs: changes
+    if: needs.changes.outputs.deps == 'true'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -68,7 +108,9 @@ jobs:
 
   build-linux:
     name: Build Linux (AppImage, deb)
-    needs: [rust, js]
+    needs: [changes, rust, js]
+    # Runs when the app changed, even if one of rust/js was skipped (not failed).
+    if: needs.changes.outputs.app == 'true' && !failure() && !cancelled()
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

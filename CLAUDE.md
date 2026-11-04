@@ -59,6 +59,26 @@ Cada app ou pacote tem o seu `CLAUDE.md` com armadilhas locais: `apps/desktop-mo
 - `apps/desktop-mobile`: Tauri 2
 - `apps/tizen`: web app Samsung TV
 
+## Local primeiro, CI como confirmação
+GitHub Actions é **gratuito** neste repo (público, runners padrão). O que custa é o **review do Claude no GitHub**, que usa a assinatura do mantenedor. Mesmo assim, verifique tudo localmente antes de enviar.
+
+| Verificação | Local | GitHub Actions |
+|---|---|---|
+| fmt, clippy, testes Rust, lint, tipos, testes JS | **`pnpm check`, sempre antes do push** | Só se aquele tipo de código mudou |
+| cargo-deny (licenças, vulnerabilidades) | `pnpm check` (se `cargo-deny` estiver instalado) | Só quando `Cargo.toml`/`Cargo.lock`/`deny.toml` mudam |
+| UI visual e navegação | `pnpm ui:check` | — |
+| Build Linux (AppImage/deb) | `pnpm build:linux` só quando mexer em empacotamento | Quando o app muda, e em todo push na `main` (artefato de teste) |
+| APK Android | — (máquina sem NDK) | Quando o app muda |
+| CodeQL | — | Só as linguagens alteradas no PR, e completo na `main` e toda semana |
+| Pré-scan de segurança, dependências, DCO, título | — (dependem do PR) | Todo PR |
+| Review do Claude no GitHub | Skills `review` e `review-contribution` | **Só sob demanda**: label `claude-review` no PR |
+
+Regras pro Claude:
+- Rode `pnpm check` antes de **todo** push e cole o resumo no PR. Nunca dê push "pra ver se o CI passa".
+- Junte commits relacionados num push só. Cada push num PR roda o CI de novo.
+- **Não** adicione a label `claude-review` sem o mantenedor pedir: ela gasta a assinatura dele.
+- Hook local: `pnpm hooks:install` ativa um `pre-push` que roda o `pnpm check` e pula se o mesmo código já passou. É o mantenedor quem ativa.
+
 ## Comandos
 Detalhes e troubleshooting: skill `dev`.
 
@@ -71,6 +91,7 @@ Detalhes e troubleshooting: skill `dev`.
 | Corrigir formatação/clippy | `pnpm fix` |
 | Print + teste de navegação da UI | `pnpm ui:check` (saída em `.ui-check/`) |
 | Pacotes Linux | `pnpm build:linux` |
+| Ativar pre-push local | `pnpm hooks:install` |
 
 Requisitos: Rust estável, Node ≥ 22, pnpm 12 (`~/.local/bin` no PATH). O hook `format.sh` formata cada arquivo editado pelo Claude.
 

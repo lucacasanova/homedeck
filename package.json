@@ -19,7 +19,8 @@
     "format": "prettier --write .",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
-    "build": "pnpm -r build"
+    "build": "pnpm -r build",
+    "hooks:install": "git config core.hooksPath .githooks && echo 'pre-push ativo: pnpm check roda antes de cada push'"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

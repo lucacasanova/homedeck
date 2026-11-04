@@ -24,8 +24,9 @@ Discussão (opcional) → Issue → Backlog → Pronto pra começar → Em andam
 1. Faça um fork e crie uma branch `tipo/N-descricao` (ex.: `feat/22-music-queue`).
 2. Use commits em [Conventional Commits](https://www.conventionalcommits.org/pt-br/), em inglês: `feat(player): add shuffle`.
 3. **Assine cada commit** com `git commit -s` ([DCO](https://developercertificate.org/)). Isso adiciona `Signed-off-by` e declara que você tem direito de contribuir aquele código.
-4. Abra o PR com o template, título em Conventional Commits e `Closes #N`.
-5. O CI precisa passar e um mantenedor revisa. O merge é por squash.
+4. Rode `pnpm check` antes do push (ou ative `pnpm hooks:install`, que faz isso automaticamente). O CI confirma, mas falhar lá custa uma rodada inteira.
+5. Abra o PR com o template, título em Conventional Commits e `Closes #N`.
+6. O CI precisa passar e um mantenedor revisa. O merge é por squash.
 
 ### O que acontece com o seu PR
 
