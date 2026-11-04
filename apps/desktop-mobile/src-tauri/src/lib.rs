@@ -62,6 +62,18 @@ pub fn run() {
         eprintln!("simulated crash in compat mode `{mode}`");
         std::process::abort();
     }
+    // Same, but the UI never loads (empty window): `HOMEDECK_TEST_HANG_MODES`.
+    #[cfg(feature = "test-hooks")]
+    if let (Ok(list), Ok(mode)) = (
+        std::env::var("HOMEDECK_TEST_HANG_MODES"),
+        std::env::var("HOMEDECK_COMPAT"),
+    ) && list.split(',').any(|m| m.trim() == mode)
+    {
+        eprintln!("simulated hang in compat mode `{mode}`");
+        loop {
+            std::thread::sleep(std::time::Duration::from_secs(60));
+        }
+    }
 
     let builder = tauri::Builder::default().plugin(log_plugin());
 

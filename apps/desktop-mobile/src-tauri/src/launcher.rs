@@ -27,9 +27,10 @@ pub const CHILD_ARG: &str = "--homedeck-child";
 /// Env var with the compatibility mode in use (for logs and the UI).
 pub const MODE_ENV: &str = "HOMEDECK_COMPAT";
 
-/// How long a child may take to show the UI before we stop waiting for "ready"
-/// (it keeps running; we just stop treating an exit as a startup failure).
-const READY_TIMEOUT: Duration = Duration::from_secs(45);
+/// How long a child may take to load the UI. A child that is still alive but
+/// never loads (e.g. an empty grey window after a WebKit/EGL failure) is a
+/// startup failure: it is stopped and the next mode is tried.
+const READY_TIMEOUT: Duration = Duration::from_secs(20);
 /// Grace period after forwarding SIGTERM before killing the child.
 const STOP_GRACE: Duration = Duration::from_secs(5);
 /// Longest line kept from the child's output.
@@ -318,6 +319,7 @@ fn run_child(
 
     let started = Instant::now();
     let mut became_ready = false;
+    let mut hung = false;
     let status = loop {
         if let Some(status) = child.try_wait()? {
             break status;
@@ -325,11 +327,15 @@ fn run_child(
         if stop.load(Ordering::Relaxed) {
             break stop_child(&mut child)?;
         }
-        if !became_ready && (ready.load(Ordering::SeqCst) || started.elapsed() > READY_TIMEOUT) {
+        if !became_ready && ready.load(Ordering::SeqCst) {
             became_ready = true;
             log_line(&format!("modo `{}` abriu a interface", mode.name));
             // Persist the outcome now: the supervisor may be killed later.
             on_ready();
+        }
+        if !became_ready && started.elapsed() > READY_TIMEOUT {
+            hung = true;
+            break stop_child(&mut child)?;
         }
         std::thread::sleep(Duration::from_millis(100));
     };
@@ -337,16 +343,24 @@ fn run_child(
         let _ = r.join();
     }
 
-    if became_ready || ready.load(Ordering::SeqCst) {
+    if became_ready {
         return Ok(ChildResult::Ran(status));
     }
     let stderr_tail = tail
         .lock()
         .map(|t| t.iter().cloned().collect())
         .unwrap_or_default();
+    let outcome = if hung {
+        format!(
+            "a interface não carregou em {} s (janela vazia)",
+            READY_TIMEOUT.as_secs()
+        )
+    } else {
+        describe_exit(status)
+    };
     Ok(ChildResult::Failed(Attempt {
         mode: mode.name,
-        outcome: describe_exit(status),
+        outcome,
         stderr_tail,
     }))
 }
