@@ -58,7 +58,7 @@ No Linux o binário roda primeiro como supervisor. Se a interface quebrar antes 
 | `homedeck --diagnostics` | Imprime o relatório do ambiente (GPU, driver, sessão, EGL) |
 | `homedeck --compat <modo>` | Força `default`, `no-dmabuf`, `mesa-egl`, `x11` ou `software` |
 | `homedeck --no-guard` | Roda sem supervisor |
-| `HOMEDECK_TEST_CRASH_MODES=default,no-dmabuf` | Simula crash nesses modos para testar a recuperação |
+| `HOMEDECK_TEST_CRASH_MODES=default,no-dmabuf` | Simula crash nesses modos (só em build com `cargo build -p homedeck-app --features test-hooks`) |
 
 Arquivos (Linux):
 - log: `~/.local/share/io.github.lucacasanova.homedeck/logs/homedeck.log`

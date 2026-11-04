@@ -1,5 +1,6 @@
 //! homedeck shell: wires the shared UI to the node core.
 
+#[cfg(target_os = "linux")]
 pub mod diagnostics;
 #[cfg(target_os = "linux")]
 pub mod launcher;
@@ -7,10 +8,15 @@ pub mod launcher;
 use tauri_plugin_log::{RotationStrategy, Target, TargetKind};
 
 /// Tells the startup supervisor (ADR 0010) that the UI loaded, so a later exit
-/// is not treated as a graphics/startup failure.
+/// is not treated as a graphics/startup failure. The token goes over our
+/// stdout pipe, which only the supervisor reads.
 fn signal_ready() {
-    if let Some(path) = std::env::var_os("HOMEDECK_READY_FILE") {
-        let _ = std::fs::write(path, b"ready");
+    #[cfg(target_os = "linux")]
+    if let Some(token) = launcher::child_token() {
+        use std::io::Write as _;
+        let mut out = std::io::stdout().lock();
+        let _ = writeln!(out, "{token}");
+        let _ = out.flush();
     }
 }
 
@@ -45,8 +51,9 @@ fn log_plugin<R: tauri::Runtime>() -> tauri::plugin::TauriPlugin<R> {
 /// Panics if the Tauri runtime fails to start (e.g. no display available).
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // Test hook for the supervisor: crash in the listed compatibility modes to
-    // simulate a graphics driver failure (`HOMEDECK_TEST_CRASH_MODES=default,no-dmabuf`).
+    // Test hook for the supervisor, compiled only with `--features test-hooks`:
+    // crash in the listed modes to simulate a graphics driver failure.
+    #[cfg(feature = "test-hooks")]
     if let (Ok(list), Ok(mode)) = (
         std::env::var("HOMEDECK_TEST_CRASH_MODES"),
         std::env::var("HOMEDECK_COMPAT"),

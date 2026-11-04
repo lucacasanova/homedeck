@@ -1,30 +1,41 @@
 //! Startup supervisor (ADR 0010).
 //!
 //! The binary first runs as a light supervisor (no WebKit, no GPU). It starts
-//! the real UI as a child process and waits for a "ready" marker written when
-//! the page finishes loading. If the child dies before that — typically a
-//! graphics driver crash — it writes a local report and retries with the next
-//! compatibility mode. The mode that works is remembered.
+//! the real UI as a child process and waits for a one-time token the child
+//! prints on its own stdout once the page has loaded. If the child dies before
+//! that — typically a graphics driver crash — it writes a local report and
+//! retries with the next compatibility mode. The mode that works is remembered.
+//!
+//! No marker files: the ready signal travels over the child's stdout pipe,
+//! which only the supervisor can read.
 
 use std::collections::VecDeque;
-use std::io::{BufRead, BufReader, Write as _};
-use std::path::{Path, PathBuf};
+use std::io::{BufRead, BufReader, Read, Write as _};
+use std::path::Path;
 use std::process::{Command, ExitStatus, Stdio};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
-use crate::diagnostics::{config_dir, data_dir, environment_report, log_tail, redact};
+use crate::diagnostics::{
+    config_dir, data_dir, environment_report, log_tail, redact, write_private,
+};
 
-/// Env var set on the child so it does not supervise itself.
-pub const CHILD_ENV: &str = "HOMEDECK_CHILD";
-/// Env var with the path the child touches once the UI has loaded.
-pub const READY_ENV: &str = "HOMEDECK_READY_FILE";
+/// Argument that marks a process as the UI child; followed by the ready token.
+/// An argument (not an env var) so programs the UI launches do not inherit it.
+pub const CHILD_ARG: &str = "--homedeck-child";
 /// Env var with the compatibility mode in use (for logs and the UI).
 pub const MODE_ENV: &str = "HOMEDECK_COMPAT";
 
 /// How long a child may take to show the UI before we stop waiting for "ready"
 /// (it keeps running; we just stop treating an exit as a startup failure).
 const READY_TIMEOUT: Duration = Duration::from_secs(45);
+/// Grace period after forwarding SIGTERM before killing the child.
+const STOP_GRACE: Duration = Duration::from_secs(5);
+/// Longest line kept from the child's output.
+const MAX_LINE: usize = 1024;
+/// Lines of child stderr kept for the report.
+const MAX_LINES: usize = 60;
 
 /// A compatibility mode: a name and the environment it adds.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -88,29 +99,38 @@ pub fn ordered(mut list: Vec<Mode>, preferred: Option<&str>) -> Vec<Mode> {
     list
 }
 
-fn saved_mode_file() -> PathBuf {
-    config_dir().join("compat-mode")
-}
-
 fn load_saved_mode() -> Option<String> {
-    std::fs::read_to_string(saved_mode_file())
+    std::fs::read_to_string(config_dir()?.join("compat-mode"))
         .ok()
         .map(|s| s.trim().to_owned())
         .filter(|s| !s.is_empty())
 }
 
 fn save_mode(name: &str) {
-    let file = saved_mode_file();
-    if let Some(dir) = file.parent() {
-        let _ = std::fs::create_dir_all(dir);
+    if let Some(dir) = config_dir() {
+        let _ = write_private(&dir.join("compat-mode"), name.as_bytes());
     }
-    let _ = std::fs::write(file, name);
 }
 
 fn now_secs() -> u64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map_or(0, |d| d.as_secs())
+}
+
+/// Unpredictable one-time token (from the kernel RNG).
+fn new_token() -> String {
+    let mut buf = [0u8; 16];
+    let ok = std::fs::File::open("/dev/urandom")
+        .and_then(|mut f| f.read_exact(&mut buf))
+        .is_ok();
+    if !ok {
+        // Extremely unlikely; still unique per run.
+        buf[..8].copy_from_slice(&now_secs().to_le_bytes());
+        buf[8..12].copy_from_slice(&std::process::id().to_le_bytes());
+    }
+    let hex: String = buf.iter().map(|b| format!("{b:02x}")).collect();
+    format!("HOMEDECK-READY-{hex}")
 }
 
 /// Human description of how a process ended.
@@ -137,7 +157,7 @@ pub struct Attempt {
     pub stderr_tail: Vec<String>,
 }
 
-/// Builds the plain-text crash report.
+/// Builds the plain-text crash report (already redacted).
 #[must_use]
 pub fn render_report(attempts: &[Attempt], recovered_with: Option<&str>) -> String {
     let mut r = String::from("# homedeck — relatório de inicialização\n\n");
@@ -166,14 +186,45 @@ pub fn render_report(attempts: &[Attempt], recovered_with: Option<&str>) -> Stri
     r
 }
 
-fn write_report(text: &str) -> Option<PathBuf> {
-    let dir = data_dir().join("crash");
-    std::fs::create_dir_all(&dir).ok()?;
-    let path = dir.join(format!("{}.txt", now_secs()));
-    std::fs::write(&path, text).ok()?;
-    // Lets the UI offer to view/send the report on the next successful start (#128).
-    let _ = std::fs::write(dir.join("pending"), path.to_string_lossy().as_bytes());
+/// Saves the report (0600) and marks it for the UI to offer later (#128).
+/// `pending` holds only the file name; the UI resolves it inside `crash/`.
+fn write_report(text: &str) -> Option<std::path::PathBuf> {
+    let dir = data_dir()?.join("crash");
+    let name = format!("{}.txt", now_secs());
+    let path = dir.join(&name);
+    write_private(&path, text.as_bytes()).ok()?;
+    let _ = write_private(&dir.join("pending"), name.as_bytes());
     Some(path)
+}
+
+fn truncate_line(mut line: String) -> String {
+    if line.len() > MAX_LINE {
+        let mut cut = MAX_LINE;
+        while !line.is_char_boundary(cut) {
+            cut -= 1;
+        }
+        line.truncate(cut);
+        line.push('…');
+    }
+    line
+}
+
+/// Reads lines with a hard cap per line, so a runaway line cannot grow memory.
+fn bounded_lines<R: Read>(reader: R, mut on_line: impl FnMut(String)) {
+    let mut reader = BufReader::new(reader);
+    let mut buf = Vec::new();
+    loop {
+        buf.clear();
+        match reader.by_ref().take(64 * 1024).read_until(b'\n', &mut buf) {
+            Ok(0) | Err(_) => break,
+            Ok(_) => {
+                let text = String::from_utf8_lossy(&buf)
+                    .trim_end_matches(['\n', '\r'])
+                    .to_owned();
+                on_line(truncate_line(text));
+            }
+        }
+    }
 }
 
 enum ChildResult {
@@ -185,56 +236,83 @@ enum ChildResult {
 
 /// Set when the supervisor receives SIGTERM/SIGINT/SIGHUP; the child is then
 /// asked to stop too, so no UI window is ever left orphaned.
-fn termination_flag() -> Arc<std::sync::atomic::AtomicBool> {
+fn termination_flag() -> Arc<AtomicBool> {
     use signal_hook::consts::{SIGHUP, SIGINT, SIGTERM};
-    let flag = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let flag = Arc::new(AtomicBool::new(false));
     for sig in [SIGTERM, SIGINT, SIGHUP] {
         let _ = signal_hook::flag::register(sig, Arc::clone(&flag));
     }
     flag
 }
 
+fn stop_child(child: &mut std::process::Child) -> std::io::Result<ExitStatus> {
+    use nix::sys::signal::{Signal, kill};
+    use nix::unistd::Pid;
+    if let Ok(pid) = i32::try_from(child.id()) {
+        let _ = kill(Pid::from_raw(pid), Signal::SIGTERM);
+    }
+    let deadline = Instant::now() + STOP_GRACE;
+    while Instant::now() < deadline {
+        if let Some(status) = child.try_wait()? {
+            return Ok(status);
+        }
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    let _ = child.kill();
+    child.wait()
+}
+
 fn run_child(
     mode: &Mode,
     args: &[String],
-    stop: &std::sync::atomic::AtomicBool,
+    stop: &AtomicBool,
     on_ready: &mut dyn FnMut(),
 ) -> std::io::Result<ChildResult> {
     let exe = std::env::current_exe()?;
-    let ready = std::env::temp_dir().join(format!(
-        "homedeck-ready-{}-{}",
-        std::process::id(),
-        mode.name
-    ));
-    let _ = std::fs::remove_file(&ready);
+    let token = new_token();
 
     let mut cmd = Command::new(exe);
-    cmd.args(args)
-        .env(CHILD_ENV, "1")
-        .env(READY_ENV, &ready)
+    cmd.arg(CHILD_ARG)
+        .arg(&token)
+        .args(args)
         .env(MODE_ENV, mode.name)
         .stdin(Stdio::inherit())
-        .stdout(Stdio::inherit())
+        .stdout(Stdio::piped())
         .stderr(Stdio::piped());
     for (k, v) in &mode.env {
         cmd.env(k, v);
     }
     let mut child = cmd.spawn()?;
 
-    // Mirror stderr to our own stderr while keeping the last lines for the report.
+    let ready = Arc::new(AtomicBool::new(false));
+    // stdout: watch for the token, mirror everything else.
+    let out_reader = child.stdout.take().map(|out| {
+        let ready = Arc::clone(&ready);
+        let token = token.clone();
+        std::thread::spawn(move || {
+            bounded_lines(out, |line| {
+                if line.trim() == token {
+                    ready.store(true, Ordering::SeqCst);
+                } else {
+                    let _ = writeln!(std::io::stdout(), "{line}");
+                }
+            });
+        })
+    });
+    // stderr: mirror and keep the last lines for the report.
     let tail: Arc<Mutex<VecDeque<String>>> = Arc::new(Mutex::new(VecDeque::new()));
-    let reader = child.stderr.take().map(|err| {
+    let err_reader = child.stderr.take().map(|err| {
         let tail = Arc::clone(&tail);
         std::thread::spawn(move || {
-            for line in BufReader::new(err).lines().map_while(Result::ok) {
+            bounded_lines(err, |line| {
                 let _ = writeln!(std::io::stderr(), "{line}");
                 if let Ok(mut t) = tail.lock() {
-                    if t.len() == 60 {
+                    if t.len() == MAX_LINES {
                         t.pop_front();
                     }
                     t.push_back(line);
                 }
-            }
+            });
         })
     });
 
@@ -244,14 +322,10 @@ fn run_child(
         if let Some(status) = child.try_wait()? {
             break status;
         }
-        if stop.load(std::sync::atomic::Ordering::Relaxed) {
-            // Forward the shutdown request, then reap the child.
-            let _ = Command::new("kill")
-                .args(["-TERM", &child.id().to_string()])
-                .status();
-            break child.wait()?;
+        if stop.load(Ordering::Relaxed) {
+            break stop_child(&mut child)?;
         }
-        if !became_ready && (ready.exists() || started.elapsed() > READY_TIMEOUT) {
+        if !became_ready && (ready.load(Ordering::SeqCst) || started.elapsed() > READY_TIMEOUT) {
             became_ready = true;
             log_line(&format!("modo `{}` abriu a interface", mode.name));
             // Persist the outcome now: the supervisor may be killed later.
@@ -259,12 +333,11 @@ fn run_child(
         }
         std::thread::sleep(Duration::from_millis(100));
     };
-    if let Some(r) = reader {
+    for r in [out_reader, err_reader].into_iter().flatten() {
         let _ = r.join();
     }
-    let _ = std::fs::remove_file(&ready);
 
-    if became_ready || ready.exists() {
+    if became_ready || ready.load(Ordering::SeqCst) {
         return Ok(ChildResult::Ran(status));
     }
     let stderr_tail = tail
@@ -283,7 +356,8 @@ fn log_line(msg: &str) {
 }
 
 /// Shown only when no mode works: a native GTK dialog (no WebKit, no GPU).
-fn show_fatal_dialog(report: Option<&Path>, text: &str) {
+/// Nothing leaves the machine unless the user attaches the file themselves.
+fn show_fatal_dialog(report: Option<&Path>) {
     use rfd::{MessageButtons, MessageDialog, MessageDialogResult, MessageLevel};
     let where_ = report.map_or_else(
         || "(não foi possível salvar)".to_owned(),
@@ -295,7 +369,7 @@ fn show_fatal_dialog(report: Option<&Path>, text: &str) {
         .set_description(format!(
             "O homedeck tentou vários modos de compatibilidade gráfica e nenhum funcionou neste computador.\n\n\
              Um relatório foi salvo em:\n{where_}\n\n\
-             Ele não sai do seu computador, a menos que você escolha reportar."
+             Ele não sai do seu computador. Para pedir ajuda, abra uma issue e anexe o arquivo."
         ))
         .set_buttons(MessageButtons::YesNoCancelCustom(
             "Abrir pasta".into(),
@@ -303,33 +377,32 @@ fn show_fatal_dialog(report: Option<&Path>, text: &str) {
             "Fechar".into(),
         ))
         .show();
-    match result {
-        MessageDialogResult::Custom(c) if c == "Abrir pasta" => {
-            if let Some(dir) = report.and_then(Path::parent) {
-                let _ = Command::new("xdg-open").arg(dir).spawn();
-            }
+    let open_folder = || {
+        if let Some(dir) = report.and_then(Path::parent) {
+            let _ = Command::new("xdg-open").arg(dir).spawn();
         }
+    };
+    match result {
+        MessageDialogResult::Custom(c) if c == "Abrir pasta" => open_folder(),
         MessageDialogResult::Custom(c) if c == "Reportar no GitHub" => {
-            let _ = Command::new("xdg-open").arg(github_issue_url(text)).spawn();
+            open_folder();
+            let _ = Command::new("xdg-open").arg(github_issue_url()).spawn();
         }
         _ => {}
     }
 }
 
-/// Prefilled GitHub issue; the user reviews everything before submitting.
+/// New-issue page with instructions only: no report data travels in the URL.
 #[must_use]
-pub fn github_issue_url(report: &str) -> String {
-    // Keep the URL under common length limits.
-    let body: String = report.chars().take(6000).collect();
-    let mut url = String::from(
-        "https://github.com/lucacasanova/homedeck/issues/new?labels=type%3Abug%2Cplatform%3Alinux&title=",
-    );
-    url.push_str(&percent_encode(
-        "O homedeck não abre (falha de inicialização)",
-    ));
-    url.push_str("&body=");
-    url.push_str(&percent_encode(&body));
-    url
+pub fn github_issue_url() -> String {
+    let body = "O homedeck não abriu neste computador.\n\n\
+                **Anexe aqui o arquivo de relatório** (a pasta foi aberta: arraste o `.txt` mais recente para esta caixa).\n\
+                Revise o conteúdo antes de enviar.\n";
+    format!(
+        "https://github.com/lucacasanova/homedeck/issues/new?labels=type%3Abug%2Cplatform%3Alinux&title={}&body={}",
+        percent_encode("O homedeck não abre (falha de inicialização)"),
+        percent_encode(body)
+    )
 }
 
 fn percent_encode(s: &str) -> String {
@@ -362,11 +435,20 @@ pub fn strip_compat_flag(args: &[String]) -> Vec<String> {
     out
 }
 
+/// If this process is the UI child, returns the ready token it must print.
+#[must_use]
+pub fn child_token() -> Option<String> {
+    let mut args = std::env::args().skip(1);
+    (args.next().as_deref() == Some(CHILD_ARG))
+        .then(|| args.next())
+        .flatten()
+}
+
 /// Entry point for `main`. Returns `Some(exit_code)` when the supervisor (or a
 /// CLI flag) handled the run, or `None` when this process should start the UI.
 #[must_use]
 pub fn supervise() -> Option<i32> {
-    if std::env::var_os(CHILD_ENV).is_some() {
+    if child_token().is_some() {
         return None;
     }
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -404,13 +486,12 @@ pub fn supervise() -> Option<i32> {
     for mode in &list {
         let mut on_ready = || {
             if !attempts.is_empty() {
-                let text = render_report(&attempts, Some(mode.name));
-                let path = write_report(&text);
+                let path = write_report(&render_report(&attempts, Some(mode.name)));
                 log_line(&format!(
                     "recuperado no modo `{}`; relatório em {}",
                     mode.name,
-                    path.map(|p| redact(&p.to_string_lossy()))
-                        .unwrap_or_default()
+                    // Local terminal only: show the real path so the user can open it.
+                    path.map(|p| p.display().to_string()).unwrap_or_default()
                 ));
             }
             if forced.is_none() && saved.as_deref() != Some(mode.name) {
@@ -418,12 +499,8 @@ pub fn supervise() -> Option<i32> {
             }
         };
         match run_child(mode, &child_args, &stop, &mut on_ready) {
-            Ok(ChildResult::Ran(status)) => {
-                return Some(status.code().unwrap_or(1));
-            }
-            Ok(ChildResult::Failed(_)) if stop.load(std::sync::atomic::Ordering::Relaxed) => {
-                return Some(1);
-            }
+            Ok(ChildResult::Ran(status)) => return Some(status.code().unwrap_or(1)),
+            Ok(ChildResult::Failed(_)) if stop.load(Ordering::Relaxed) => return Some(1),
             Ok(ChildResult::Failed(attempt)) => {
                 log_line(&format!(
                     "modo `{}` falhou: {}",
@@ -438,9 +515,8 @@ pub fn supervise() -> Option<i32> {
         }
     }
 
-    let text = render_report(&attempts, None);
-    let path = write_report(&text);
-    show_fatal_dialog(path.as_deref(), &text);
+    let path = write_report(&render_report(&attempts, None));
+    show_fatal_dialog(path.as_deref());
     Some(1)
 }
 
@@ -481,11 +557,26 @@ mod tests {
     }
 
     #[test]
-    fn issue_url_is_encoded_and_bounded() {
-        let url = github_issue_url(&"á ".repeat(10_000));
+    fn issue_url_carries_no_report_data() {
+        let url = github_issue_url();
         assert!(url.starts_with("https://github.com/lucacasanova/homedeck/issues/new?"));
         assert!(!url.contains(' '));
-        assert!(url.len() < 40_000);
+        assert!(url.len() < 2000);
+    }
+
+    #[test]
+    fn tokens_are_unique_and_unguessable_format() {
+        let (a, b) = (new_token(), new_token());
+        assert_ne!(a, b);
+        assert!(a.starts_with("HOMEDECK-READY-") && a.len() == "HOMEDECK-READY-".len() + 32);
+    }
+
+    #[test]
+    fn long_lines_are_truncated_on_char_boundary() {
+        let line = "á".repeat(MAX_LINE);
+        let out = truncate_line(line);
+        assert!(out.len() <= MAX_LINE + '…'.len_utf8());
+        assert!(out.ends_with('…'));
     }
 
     #[test]

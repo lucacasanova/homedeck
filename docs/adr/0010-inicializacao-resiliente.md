@@ -16,7 +16,7 @@ O homedeck precisa abrir em qualquer combinação razoável de sistema e driver.
 
 ### Supervisor (desktop Linux)
 1. O binário roda primeiro como **supervisor**, que é leve, não usa WebKit nem GPU, e inicia a interface como **processo filho**.
-2. O filho sinaliza "pronto" quando a página carrega, usando um arquivo marcador.
+2. O filho sinaliza "pronto" quando a página carrega, imprimindo um **token aleatório de uso único** na própria saída padrão. Só o supervisor lê esse pipe, então nenhum outro processo consegue falsificar o sinal. Não há arquivo marcador em `/tmp`.
 3. Se o filho morrer **antes de ficar pronto**:
    - o supervisor grava um relatório;
    - tenta o próximo **modo de compatibilidade**.
@@ -41,13 +41,21 @@ Fica em `~/.local/share/io.github.lucacasanova.homedeck/crash/<data>.txt` e cont
 - as últimas linhas da saída de erro;
 - o fim do log do app.
 
-Nenhum caminho de arquivo de mídia nem nome de usuário entra no relatório: o `$HOME` é trocado por `~`.
+Antes de gravar, o relatório é **redigido**:
+- a pasta pessoal (inclusive o caminho real, se for um symlink) vira `~`;
+- o nome de usuário e o hostname viram `<usuário>` e `<host>`;
+- `/run/user/<uid>` é anonimizado;
+- caminhos pessoais (`/home`, `/var/home`, `/media`, `/run/media`, `/mnt`, `~/`) viram `<caminho>`, mantendo só a extensão, que ajuda a diagnosticar codec.
+
+Caminhos de sistema, como `/usr/lib/...`, são mantidos.
+
+Arquivos com permissão `0600`, em pastas `0700`. Sem `HOME`, nada é gravado (nunca cai em `/tmp`). O marcador `pending` guarda só o nome do arquivo.
 
 ### Consentimento
 - **Algum modo funcionou:** o app abre e mostra que houve falha na última abertura, oferecendo ver ou enviar o relatório (#128).
 - **Nenhum modo funcionou:** o supervisor mostra uma **caixa de diálogo nativa GTK**, que não usa WebKit nem GPU, com as opções:
   - **Abrir pasta**;
-  - **Reportar no GitHub**: abre uma issue preenchida no navegador, e o usuário vê tudo antes de enviar;
+  - **Reportar no GitHub**: abre a pasta e uma issue nova **sem nenhum dado na URL**, com instruções pra anexar o arquivo. O usuário escolhe o que envia;
   - **Fechar**.
 - Nada é enviado sem um clique explícito.
 
@@ -55,6 +63,10 @@ Nenhum caminho de arquivo de mídia nem nome de usuário entra no relatório: o 
 - `homedeck --diagnostics`: imprime o relatório do ambiente.
 - `homedeck --compat <modo>`: força um modo.
 - `homedeck --no-guard`: roda sem o supervisor.
+- Teste de recuperação: `HOMEDECK_TEST_CRASH_MODES`, que **só existe** em builds com `--features test-hooks` e nunca em releases.
+
+### Sinais
+SIGTERM, SIGINT e SIGHUP são repassados ao filho (via `nix`). Depois de 5 s, o filho é encerrado à força. A flag de processo filho vai por argumento, não por variável de ambiente, então programas abertos pelo app não a herdam.
 
 ## Alternativas consideradas
 - **Só documentar variáveis de ambiente:** o usuário comum não chega até elas.
