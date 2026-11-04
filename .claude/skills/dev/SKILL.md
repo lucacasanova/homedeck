@@ -50,5 +50,22 @@ pnpm build:linux      # AppImage + .deb em target/release/bundle/
 | `generate_context!` reclama de `dist` | Front não buildado | `pnpm check` cria um placeholder; ou rode `pnpm --filter @homedeck/app build` |
 | `pnpm: command not found` | pnpm instalado em `~/.local` | `export PATH=$HOME/.local/bin:$PATH` |
 
+## Inicialização resiliente e diagnóstico (ADR 0010)
+No Linux o binário roda primeiro como supervisor. Se a interface quebrar antes de abrir (driver de vídeo), ele tenta outros modos de compatibilidade e salva o que funcionou.
+
+| Comando / variável | Uso |
+|---|---|
+| `homedeck --diagnostics` | Imprime o relatório do ambiente (GPU, driver, sessão, EGL) |
+| `homedeck --compat <modo>` | Força `default`, `no-dmabuf`, `mesa-egl`, `x11` ou `software` |
+| `homedeck --no-guard` | Roda sem supervisor |
+| `HOMEDECK_TEST_CRASH_MODES=default,no-dmabuf` | Simula crash nesses modos (só em build com `cargo build -p homedeck-app --features test-hooks`) |
+
+Arquivos (Linux):
+- log: `~/.local/share/io.github.lucacasanova.homedeck/logs/homedeck.log`
+- relatórios: `~/.local/share/io.github.lucacasanova.homedeck/crash/`
+- modo salvo: `~/.config/io.github.lucacasanova.homedeck/compat-mode`
+
+Depois de testar com `HOMEDECK_TEST_CRASH_MODES`, apague o `compat-mode` e o `crash/` pra não deixar a máquina presa num modo de compatibilidade.
+
 ## Formatação automática
 O hook `.claude/hooks/format.sh` formata (Prettier / rustfmt) cada arquivo que o Claude edita. Mesmo assim, rode `pnpm check` no final.

@@ -28,3 +28,12 @@ tauri-plugin-log = "2"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-window-state = "2"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+nix = { version = "0.31", default-features = false, features = ["hostname", "signal", "user"] }
+rfd = { version = "0.17", default-features = false, features = ["gtk3"] }
+signal-hook = "0.3"
+
+[features]
+# Enables HOMEDECK_TEST_CRASH_MODES (simulated crashes for supervisor tests). Never in releases.
+test-hooks = []
