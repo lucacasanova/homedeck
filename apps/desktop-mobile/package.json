@@ -17,6 +17,7 @@
     "@noriginmedia/norigin-spatial-navigation-core": "4.2.0",
     "@noriginmedia/norigin-spatial-navigation-react": "3.3.0",
     "@tauri-apps/api": "2.11.1",
+    "@tauri-apps/plugin-log": "2.9.2",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
