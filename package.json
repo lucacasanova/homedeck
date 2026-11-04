@@ -14,7 +14,7 @@
     "fix": "prettier --write . && cargo fmt --all && cargo clippy --workspace --all-targets --fix --allow-dirty --allow-staged -q",
     "env:check": "bash scripts/doctor.sh",
     "ui:check": "node scripts/ui-check.mjs",
-    "build:linux": "cd apps/desktop-mobile && NO_STRIP=true pnpm tauri build --bundles appimage deb && cd ../.. && bash scripts/fix-appimage.sh target/release/bundle/appimage/*.AppImage",
+    "build:linux": "cd apps/desktop-mobile && NO_STRIP=true LINUXDEPLOY_EXCLUDED_LIBRARIES='libwayland-*' pnpm tauri build --bundles appimage deb && cd ../.. && bash scripts/check-appimage.sh target/release/bundle/appimage/*.AppImage",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "typecheck": "pnpm -r typecheck",
