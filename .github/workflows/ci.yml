@@ -129,7 +129,13 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Tauri build
         working-directory: apps/desktop-mobile
+        env:
+          # Don't bundle libwayland: the CI copy is ABI-incompatible with the
+          # NVIDIA egl-wayland driver on users' machines (#158, ADR 0010).
+          LINUXDEPLOY_EXCLUDED_LIBRARIES: "libwayland-*"
         run: pnpm tauri build --bundles appimage deb
+      - name: Verify the AppImage ships no libwayland (#158)
+        run: bash scripts/check-appimage.sh target/release/bundle/appimage/*.AppImage
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: homedeck-linux-${{ github.sha }}

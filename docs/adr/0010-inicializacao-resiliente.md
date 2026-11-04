@@ -68,6 +68,12 @@ Arquivos com permissão `0600`, em pastas `0700`. Sem `HOME`, nada é gravado (n
 ### Sinais
 SIGTERM, SIGINT e SIGHUP são repassados ao filho (via `nix`). Depois de 5 s, o filho é encerrado à força. A flag de processo filho vai por argumento, não por variável de ambiente, então programas abertos pelo app não a herdam.
 
+### Causa raiz do caso NVIDIA (#158)
+O `linuxdeploy` embute a `libwayland` do Ubuntu do CI no AppImage, e ela é incompatível com o `egl-wayland` do driver NVIDIA do sistema. O build define `LINUXDEPLOY_EXCLUDED_LIBRARIES="libwayland-*"`, que o Tauri repassa ao `linuxdeploy`, e o `scripts/check-appimage.sh` falha o CI se alguma `libwayland` voltar a ser embutida. A `libwayland` é estável e o sistema sempre tem uma, porque o GTK3 depende dela. Testado no Manjaro com Intel + NVIDIA: o AppImage abre direto no modo `default`, tanto em Wayland quanto em X11.
+
+### Janela que não carrega
+Interface que não sinaliza "pronto" em **20 s** conta como falha: o filho é encerrado e o próximo modo é tentado. Isso cobre o caso de janela aberta, mas cinza e vazia, depois de uma falha de WebKit/EGL.
+
 ## Alternativas consideradas
 - **Só documentar variáveis de ambiente:** o usuário comum não chega até elas.
 - **Script `AppRun` no AppImage:** cobre só o AppImage, não o `.deb` nem o AUR.

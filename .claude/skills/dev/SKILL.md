@@ -49,6 +49,7 @@ pnpm build:linux      # AppImage + .deb em target/release/bundle/
 | Sintoma | Causa | Solução |
 |---|---|---|
 | `failed to run linuxdeploy` / `libgdk_pixbuf` em `/usr/lib/vmware/lib` | VMware instalado polui o caminho das libs | Use o `.deb` localmente (`pnpm tauri build --bundles deb` em `apps/desktop-mobile`); o AppImage oficial sai do CI |
+| AppImage quebra (SIGSEGV) ou abre janela cinza com NVIDIA no Wayland | `libwayland` embutida pelo linuxdeploy é incompatível com o `egl-wayland` da NVIDIA | `LINUXDEPLOY_EXCLUDED_LIBRARIES="libwayland-*"` no build (CI e `pnpm build:linux`) + `scripts/check-appimage.sh` confere. Não remova |
 | `linuxdeploy` falha no strip em Arch/Manjaro | Bibliotecas com `.relr.dyn` | `NO_STRIP=true` (já incluso em `pnpm build:linux`) |
 | `generate_context!` reclama de `dist` | Front não buildado | `pnpm check` cria um placeholder; ou rode `pnpm --filter @homedeck/app build` |
 | `pnpm: command not found` | pnpm instalado em `~/.local` | `export PATH=$HOME/.local/bin:$PATH` |
