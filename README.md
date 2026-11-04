@@ -13,7 +13,7 @@
 
 Instale no PC, no celular e na TV. Eles se encontram sozinhos na rede de casa, e qualquer um mostra e controla a mídia dos outros.
 
-<sub>🇺🇸 <b>English:</b> open-source, console-style local media center. Play videos, music and photos across PC, Android, Android TV and Samsung (Tizen) TVs, peer-to-peer on your home network — no server, no cloud. <a href="https://lucacasanova.github.io/homedeck/en/">Read more in English</a>.</sub>
+<sub>🇺🇸 <b>English:</b> open-source, console-style local media center. Play videos, music and photos across PC, Android, Android TV and Samsung (Tizen) TVs, peer-to-peer on your home network — no server, no cloud. <a href="README.en.md">Read the README in English</a>.</sub>
 
 [![Stars](https://img.shields.io/github/stars/lucacasanova/homedeck?style=for-the-badge&logo=github&color=F4F4F5&labelColor=1A1A1E)](https://github.com/lucacasanova/homedeck/stargazers)
 [![Forks](https://img.shields.io/github/forks/lucacasanova/homedeck?style=for-the-badge&logo=github&color=F4F4F5&labelColor=1A1A1E)](https://github.com/lucacasanova/homedeck/network/members)
@@ -27,7 +27,7 @@ Instale no PC, no celular e na TV. Eles se encontram sozinhos na rede de casa, e
 [![Repo size](https://img.shields.io/github/repo-size/lucacasanova/homedeck?style=flat-square)](https://github.com/lucacasanova/homedeck)
 [![Built with Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-d97757?style=flat-square&logo=anthropic&logoColor=white)](https://claude.com/claude-code)
 
-[🌐 Site](https://lucacasanova.github.io/homedeck/) · [Objetivo](#-objetivo) · [Funcionalidades](#-funcionalidades) · [Plataformas](#-plataformas) · [Conquistas](#-conquistas) · [Roadmap](#-roadmap) · [Arquitetura](#-arquitetura) · [Claude](#-desenvolvido-com-claude) · [Contribuir](#-como-contribuir)
+[🌐 Site](https://lucacasanova.github.io/homedeck/) · [🇺🇸 English](README.en.md) · [Objetivo](#-objetivo) · [Funcionalidades](#-funcionalidades) · [Plataformas](#-plataformas) · [Conquistas](#-conquistas) · [Roadmap](#-roadmap) · [Arquitetura](#-arquitetura) · [Claude](#-desenvolvido-com-claude) · [Contribuir](#-como-contribuir)
 
 </div>
 
