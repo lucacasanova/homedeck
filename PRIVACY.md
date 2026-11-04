@@ -1,6 +1,6 @@
 # Política de Privacidade
 
-_Última atualização: 2026-11-03_
+_Última atualização: 2026-11-03 (atualizações e relatórios de falha)_
 
 O homedeck é **local-first**: sua mídia, suas contas e suas configurações ficam nos seus dispositivos.
 
@@ -16,6 +16,19 @@ Nada disso é enviado ao projeto, a nenhum servidor nosso nem a terceiros.
 ## Comunicação na rede
 
 No MVP, os dispositivos conversam **apenas na sua rede local**, com criptografia. Quando o acesso remoto existir (M11), ele vai ser opcional, com criptografia ponta a ponta, e esta política vai ser atualizada antes.
+
+## Verificação de atualizações
+
+- O app consulta as releases do projeto no GitHub pra saber se existe versão nova (ADR 0011).
+- Essa consulta envia só o que qualquer download envia: IP e versão do app, que o GitHub recebe como qualquer acesso. O projeto não guarda nada disso.
+- Pode ser desligada nas configurações ou com `HOMEDECK_UPDATES=0`.
+- Toda atualização é assinada; o app recusa pacotes com assinatura inválida.
+
+## Relatórios de falha na inicialização
+
+- Se o app não conseguir abrir (por exemplo, por um problema no driver de vídeo), um relatório técnico é salvo **só no seu computador**, em `~/.local/share/io.github.lucacasanova.homedeck/crash/` (ADR 0010).
+- Ele contém sistema, GPU, driver e o motivo da falha. A pasta pessoal aparece como `~`, e nenhum arquivo seu é incluído.
+- Ele só sai do computador se você clicar em "Reportar", e você vê o conteúdo antes de enviar.
 
 ## Telemetria (opcional)
 
