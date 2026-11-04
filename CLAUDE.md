@@ -52,6 +52,7 @@ Hooks:
 - `.claude/hooks/session-status.sh` mostra milestones e PRs abertos no início da sessão.
 
 ## Estrutura
+Cada app ou pacote tem o seu `CLAUDE.md` com armadilhas locais: `apps/desktop-mobile/`, `crates/core/`, `packages/ui/`.
 - `crates/core`: lógica do nó (Rust)
 - `packages/ui`: UI compartilhada
 - `packages/protocol`: tipos entre nós
