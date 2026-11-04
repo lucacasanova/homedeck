@@ -5,7 +5,7 @@ Leia antes o `CLAUDE.md` da raiz. Aqui vão só as armadilhas deste app.
 ## Estrutura
 - `src/` é a UI (React 19 + Vite 8). Componentes compartilháveis vão pra `packages/ui`, não aqui.
 - `src-tauri/src/lib.rs` tem os comandos Tauri e os plugins; o `main.rs` só chama o supervisor e o `run()`.
-- `src-tauri/src/launcher.rs` é o supervisor de inicialização (ADR 0010). Ele roda **antes** do WebKit: não use nada de Tauri ou GPU lá.
+- `src-tauri/src/launcher.rs` é o supervisor de inicialização (ADR 0010). Ele roda **antes** do WebKit: não use nada de Tauri ou GPU lá. O sinal de "pronto" é um token no stdout do filho; nunca volte a usar arquivo em `/tmp`.
 - `src-tauri/src/diagnostics.rs` monta o relatório do ambiente. Todo texto que vai pra relatório passa por `redact()`.
 
 ## Regras
@@ -22,6 +22,6 @@ Leia antes o `CLAUDE.md` da raiz. Aqui vão só as armadilhas deste app.
 pnpm --filter @homedeck/app test        # vitest
 cargo test -p homedeck-app               # Rust (supervisor, diagnóstico)
 pnpm ui:check                            # print + navegação por setas
-HOMEDECK_TEST_CRASH_MODES=default ./target/release/homedeck-app   # recuperação de crash
+cargo build --release -p homedeck-app --features test-hooks && HOMEDECK_TEST_CRASH_MODES=default ./target/release/homedeck-app
 ```
 Depois de testar a recuperação, apague `~/.config/io.github.lucacasanova.homedeck/compat-mode`.
