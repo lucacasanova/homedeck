@@ -20,7 +20,7 @@ if [[ "$only" != "--js" ]]; then
   step "cargo clippy" cargo clippy --workspace --all-targets -q -- -D warnings
   step "cargo test" cargo test --workspace -q
   if cargo deny --version >/dev/null 2>&1; then
-    step "cargo deny" cargo deny check -q advisories bans licenses sources
+    step "cargo deny" cargo deny --log-level error check advisories bans licenses sources
   else
     results+=("⏭  cargo deny (instale: cargo install cargo-deny --locked)")
   fi
