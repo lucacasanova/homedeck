@@ -1,14 +1,17 @@
 name: Claude Code Review
 
-# Automatic review on every PR. Fork PRs need maintainer approval before any
-# workflow runs, and secrets are not exposed to forks on `pull_request`.
+# On demand only: this runs on the maintainer's Claude subscription, so it is
+# triggered by adding the `claude-review` label to a PR (re-add to run again).
+# Day-to-day review happens locally (skills `review`, `review-contribution`).
+# Fork PRs need maintainer approval before any workflow runs, and secrets are
+# not exposed to forks on `pull_request`.
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review, reopened]
+    types: [labeled]
 
 jobs:
   claude-review:
-    if: github.event.pull_request.draft == false && github.actor != 'dependabot[bot]'
+    if: github.event.label.name == 'claude-review' && github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     permissions:
       contents: read

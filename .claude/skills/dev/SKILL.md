@@ -17,6 +17,9 @@ pnpm install
 | `pnpm dev` | App nativo (Tauri) com hot reload. Abre em tela cheia; F11 alterna |
 | `pnpm dev:web` | Só a UI no navegador (http://localhost:1420). Comandos nativos caem no fallback web |
 
+## Local x CI
+Veja a tabela "Local primeiro, CI como confirmação" no `CLAUDE.md`. Resumo: `pnpm check` antes de todo push; o CI só confirma e roda o que não dá pra rodar aqui (APK Android, CodeQL, verificações do PR). Review do Claude no GitHub só com a label `claude-review`, a pedido do mantenedor.
+
 ## Verificar antes de qualquer PR
 ```bash
 pnpm check            # tudo que o CI roda: cargo fmt/clippy/test + lint/typecheck/test
