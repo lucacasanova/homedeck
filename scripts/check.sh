@@ -19,7 +19,7 @@ if [[ "$only" != "--js" ]]; then
   step "cargo fmt" cargo fmt --all -- --check
   step "cargo clippy" cargo clippy --workspace --all-targets -q -- -D warnings
   step "cargo test" cargo test --workspace -q
-  if command -v cargo-deny >/dev/null; then
+  if cargo deny --version >/dev/null 2>&1; then
     step "cargo deny" cargo deny check -q advisories bans licenses sources
   else
     results+=("⏭  cargo deny (instale: cargo install cargo-deny --locked)")
