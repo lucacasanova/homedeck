@@ -27,6 +27,7 @@ Rode `git diff main...HEAD` (ou o diff do PR) e confira cada item. Reporte só o
 - [ ] Dedup segue a ordem tamanho → hash parcial → hash completo.
 
 ## Projeto
+- [ ] Mudou protocolo entre aparelhos, migration do banco ou `TELEMETRY.md`? O número do componente subiu (ADR 0007).
 - [ ] Conventional Commits.
 - [ ] Testes cobrindo o comportamento novo.
 - [ ] `ARCHITECTURE.md` atualizado se mudou protocolo ou módulo.

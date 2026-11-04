@@ -26,7 +26,7 @@ MVP = **Linux (Manjaro), Android/Android TV e Tizen**, só **reprodução de mí
 - **Segurança:** todo acesso exige pareamento do dispositivo **e** login do usuário (ADR 0004). Só `/api/v1/info` é aberto. Senhas com Argon2id, nunca em log.
 - **Rede:** no MVP só rede local. Nenhum nó escuta na internet; acesso remoto é M11 (ADR 0005).
 - **Jogos:** somente originais, pelo launcher oficial (ADR 0006). Recuse ROMs, cracks e contorno de DRM.
-- **Versão:** SemVer único no monorepo, 0.x até o MVP (ADR 0007).
+- **Versão (ADR 0007):** o produto usa `vMAJOR.MINOR.PATCH` (antes do MVP, `0.<milestone>.<patch>`; MVP = `1.0.0`). Cada componente tem número próprio no `versions.json` (interface, núcleo, protocolo, banco, telemetria, tizen, android). Mudou protocolo, migration do banco ou catálogo de telemetria → suba o número correspondente no mesmo PR.
 - **Telemetria (ADR 0008):** opt-in, desligada por padrão. Evento novo só entra se estiver em `docs/privacy/TELEMETRY.md` no mesmo PR, com propriedades só de enum/faixa. Nunca enviar caminho, nome de arquivo, título de mídia, nome de dispositivo, conta, IP ou ID permanente. PR com telemetria passa pelo `security-reviewer`.
 - **Público x privado:** código, catálogo de eventos e política ficam neste repo público. Dados, dashboards, infra e credenciais ficam no repo privado `lucacasanova/homedeck-ops`. Nunca copiar dados de telemetria, segredos ou análises privadas pra este repo, pra issues ou pra PRs.
 
@@ -71,7 +71,7 @@ GitHub Actions é **gratuito** neste repo (público, runners padrão). O que cus
 | APK Android | — (máquina sem NDK) | Quando o app muda |
 | CodeQL | — | Só as linguagens alteradas no PR, e completo na `main` e toda semana |
 | Pré-scan de segurança, dependências, DCO, título | — (dependem do PR) | Todo PR |
-| Review do Claude no GitHub | Skills `review` e `review-contribution` | **Só sob demanda**: label `claude-review` no PR |
+| Review do Claude no GitHub | Skills `review` e `review-contribution` | **Desligado** a pedido do mantenedor (`gh workflow enable "Claude Code Review"` pra religar). Ligado, roda só com a label `claude-review` |
 
 Regras pro Claude:
 - Rode `pnpm check` antes de **todo** push e cole o resumo no PR. Nunca dê push "pra ver se o CI passa".
